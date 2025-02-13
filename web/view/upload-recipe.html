@@ -1,0 +1,36 @@
+{{ define "head" }}
+
+<title> Upload Recipe </title>
+
+{{ end }}
+
+{{ define "body" }}
+
+<h1> Enter the following </h1>
+
+<form action="/api/add-recipe" method="post">
+
+  <p>
+    <label for="Name">Name</label>
+    <br>
+    <input type="text" name="name"> 
+  </p>
+
+  <p>
+    <label for="OwnerName">User Name</label>
+    <br>
+    <input type="text" name="ownername"> 
+  </p>
+
+  <p>
+    <label for="Content">Write here</label>
+    <br>
+    <textarea rows="10" cols="10"></textarea>
+  </p>
+
+  <p>
+    <button type="submit">Submit</button>
+  </p>
+  
+
+{{ end }}
