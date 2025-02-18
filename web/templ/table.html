@@ -1,0 +1,13 @@
+{{ define "table" }}
+
+{{range . }}
+
+<tr> 
+  <td> {{ .UUID }} </td>
+  <td> {{ .Name }} </td>
+  <td> {{ .OwnerId }} </td>
+</tr>
+
+{{ end }}
+
+{{ end }}

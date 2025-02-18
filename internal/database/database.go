@@ -11,10 +11,17 @@ import (
 
 type Service interface {
   Close() error
+  // User
   AddUser(user *modals.User) (error) 
   GetUser(uuid string) (*modals.User, error) 
   GetUserUUid(name string) (string, error) 
+  
+  // Recipes
   AddRecipe(recipe *modals.Recipe) (error)  
+  GetAllRecipes() (*[]modals.Recipe, error) 
+
+  // Session
+  AddSession(session *modals.Session) (error)
 }
 
 type service struct {

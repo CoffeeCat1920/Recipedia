@@ -16,6 +16,7 @@ func init() {
   views["login"] = template.Must(template.ParseFiles("web/view/login.html", "web/view/base.html"))
   views["test"] = template.Must(template.ParseFiles("web/recipes/friedRice/recipe.html", "web/view/base.html"))
   views["upload-recipe"] = template.Must(template.ParseFiles("web/view/upload-recipe.html", "web/view/base.html"))
+  // views["index"] = template.Must(template.ParseFiles("web/view/index.html", "web/view/base.html"))
 }
 
 func RenderView( w http.ResponseWriter, name string, tmpl string, viewModel interface{} ) {

@@ -26,6 +26,7 @@ func hashPassword(password string) (string, error) {
 
 }
 
+// TODO - Change it to return an error type
 func (user *User) CheckPassword(password string) (bool) {
 	hashedPassword := []byte(user.Password)
 	passwordBytes := []byte(password)
