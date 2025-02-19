@@ -17,6 +17,7 @@ func (s* service) AddRecipe(recipe *modals.Recipe) (error)  {
   return nil
 }
 
+// TODO: Make it work
 func (s *service) GetAllRecipes() (*[]modals.Recipe, error) {
   var Recipes []modals.Recipe
 
@@ -41,3 +42,4 @@ func (s *service) GetAllRecipes() (*[]modals.Recipe, error) {
 
   return &Recipes, nil
 }
+

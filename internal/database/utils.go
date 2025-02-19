@@ -1,6 +1,6 @@
 package database
 
-func (s *service) columnExist(tableName string, columnName string, entry string) (bool, error) {
+func (s *service) columnExist(tableName string, columnName string) (bool, error) {
 
   query := `
   SELECT EXISTS (

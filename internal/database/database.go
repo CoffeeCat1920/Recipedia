@@ -22,6 +22,8 @@ type Service interface {
 
   // Session
   AddSession(session *modals.Session) (error)
+  GetSession(sessionId string) (*modals.Session, error) 
+  DeleteSession(sessionId string) (error) 
 }
 
 type service struct {

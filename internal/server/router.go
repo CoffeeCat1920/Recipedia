@@ -58,13 +58,14 @@ func (s *Server) RegisterRouts() http.Handler {
 
   r := mux.NewRouter()
 
-  r.HandleFunc("/test", web.Render("test"))
+  r.HandleFunc("/test", web.Render("test", nil))
 
   // Views
-  r.HandleFunc("/view/search", web.Render("search"))
-  r.HandleFunc("/view/signup", web.Render("signup"))
-  r.HandleFunc("/view/login", web.Render("login"))
-  r.HandleFunc("/view/upload-recipe", web.Render("upload-recipe"))
+  r.HandleFunc("/view/search", web.Render("search", nil))
+  r.HandleFunc("/view/signup", web.Render("signup", nil))
+  r.HandleFunc("/view/login", web.Render("login", nil))
+  r.HandleFunc("/view/upload-recipe", web.Render("upload-recipe", nil))
+  r.HandleFunc("view/dashboard", api.Authorize( web.RenderSecure("search") ))  
   // r.HandleFunc("/view/index", web.IndexHandler)
 
   // Api

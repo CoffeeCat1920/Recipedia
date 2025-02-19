@@ -4,12 +4,10 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"time"
-
-	"github.com/google/uuid"
 )
 
 type Session struct {
-  UserId uuid.UUID 
+  UserId string 
   SessionId string
   Exp time.Time
 }
@@ -20,10 +18,14 @@ func generateSessionToken() string {
   return base64.URLEncoding.EncodeToString(b)
 }
 
-func NewSession(UserID uuid.UUID) *Session {
+func NewSession(UserID string) *Session {
   return &Session{
     UserId: UserID,
     SessionId: generateSessionToken(),
     Exp: time.Now().AddDate(0, 2, 0),
   }
+}
+
+func (s *Session)IsExpired() bool {
+  return s.Exp.Before(time.Now())
 }
