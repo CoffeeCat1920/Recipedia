@@ -7,9 +7,9 @@ import (
 )
 
 type Session struct {
-  UserId string 
-  SessionId string
-  Exp time.Time
+  SessionId string `json:"sessionid"`
+  OwnerId string `json:"ownerid"` 
+  Exp time.Time `json:"exp"`
 }
 
 func generateSessionToken() string {
@@ -18,11 +18,11 @@ func generateSessionToken() string {
   return base64.URLEncoding.EncodeToString(b)
 }
 
-func NewSession(UserID string) *Session {
+func NewSession(OwnerId string) *Session {
   return &Session{
-    UserId: UserID,
     SessionId: generateSessionToken(),
-    Exp: time.Now().AddDate(0, 2, 0),
+    OwnerId: OwnerId,
+    Exp: time.Now().AddDate(0, 2, 0), 
   }
 }
 

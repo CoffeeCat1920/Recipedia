@@ -1,16 +1,22 @@
 package api
 
 import (
-	"context"
+	// "context"
 	"fmt"
 	"net/http"
 	"shiro/internal/database"
 	"shiro/internal/modals"
+
 )
 
 func setCookie(w http.ResponseWriter, user *modals.User) {
   s := modals.NewSession(user.UUID)
-  database.New().AddSession(s)
+
+  err := database.New().AddSession(s)
+  if err != nil {
+    panic(err)
+  }
+
   http.SetCookie(w, &http.Cookie{
     Name: "sessionCookie",
     Value: s.SessionId,
@@ -28,64 +34,65 @@ func VerifyUser(w http.ResponseWriter, r *http.Request) {
   userName := r.PostFormValue("name")
   userPassword := r.PostFormValue("password")
   
-  user, err := database.New().GetUser(userName)
+  user, err := database.New().GetUserByName(userName)
   if err != nil {
-    fmt.Print("\nCan't find User in db")
+    fmt.Print("\nCan't find User in db\n")
     return
   }
   fmt.Print("\nVarifying User " + user.Name)
 
   check := user.CheckPassword(userPassword)
   if !check {
-    fmt.Print("\nWrong password")
-    w.WriteHeader(http.StatusUnauthorized)
+    fmt.Print("\nWrong password\n")
     http.Redirect(w, r, "/view/login", 302)
-    return
   } else {
-    fmt.Print("\nCorrect password")
+    fmt.Print("\nCorrect password\n")
     setCookie(w, user) 
     http.Redirect(w, r, "/view/dashboard", 303)
-    return
   }
 }
 
 // NOTE: Test fucntiont to test secure paths
-func authorize(w http.ResponseWriter, r *http.Request) (*modals.User) {
+func authorize(r *http.Request) (*modals.User, error) {
   c, err := r.Cookie("sessionCookie")
   if err != nil {
-    http.Redirect(w, r, "/view/login", 400)
-    return nil
+    return nil, err
   }
 
   sessionToken := c.Value
+  fmt.Printf("\nThis is the session toke - %s\n", sessionToken)
   session, err := database.New().GetSession(sessionToken)
   if err != nil {
-    http.Redirect(w, r, "/view/login", 400)
-    return nil 
+    return nil, err 
   }
+
+  fmt.Printf("\nThis is the session toke in the database - %s\n", sessionToken)
+  fmt.Printf("\nThis is the ownerid in the database - %s\n", sessionToken)
   
-  if session.IsExpired() {
-    err = database.New().DeleteSession(sessionToken)
-    return nil 
-  } 
-
-  user, err := database.New().GetUser(session.UserId) 
-  if err != nil {
-    http.Redirect(w, r, "/view/login", 400)
-    return nil 
-  }
-
-  return user
+  // if session.IsExpired() {
+  //   err = database.New().DeleteSession(sessionToken)
+  //   return nil, err 
+  // } 
+  
+  // if err != nil {
+  //   return nil, err 
+  // }
+  user, err  := database.New().GetUserByUUid(session.OwnerId)
+  return user, nil
 }
 
 func Authorize(next http.HandlerFunc) http.HandlerFunc {
   return func(w http.ResponseWriter, r *http.Request) {
-    if user := authorize(w, r); user == nil {
-      http.Redirect(w, r, "/view/login", 302)
-    } else {
-      ctx := context.WithValue(r.Context(), "user", user)
-      r = r.WithContext(ctx)
-      next(w, r)
+    user, err := authorize(r)
+    if err == nil {
+      fmt.Printf("Can't verify user")
+      http.Redirect(w, r, "/view/login", http.StatusFound)
     }
+    _ = user
+    // fmt.Printf("Verified user %s", user.Name)
+    // ctx := context.WithValue(r.Context(), "user", user)
+    // next(w, r.WithContext(ctx))
+    // fmt.Printf("\nAuthorized user %s\n", user.Name)
+    next(w, r)
   }
-} 
+}

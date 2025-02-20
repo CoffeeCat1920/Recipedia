@@ -13,7 +13,8 @@ type Service interface {
   Close() error
   // User
   AddUser(user *modals.User) (error) 
-  GetUser(uuid string) (*modals.User, error) 
+  GetUserByUUid(uuid string) (*modals.User, error) 
+  GetUserByName(name string) (*modals.User, error) 
   GetUserUUid(name string) (string, error) 
   
   // Recipes

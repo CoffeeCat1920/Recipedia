@@ -2,7 +2,7 @@ package web
 
 import (
 	"net/http"
-	"shiro/internal/modals"
+	// "shiro/internal/modals"
 	"shiro/web/view"
 )
 
@@ -14,7 +14,7 @@ func Render(name string, data interface{}) func(w http.ResponseWriter, r *http.R
 
 func RenderSecure(name string) func(w http.ResponseWriter, r *http.Request) {
   return func(w http.ResponseWriter, r *http.Request) {
-    view.RenderView(w, name, "base", r.Context().Value("user").(*modals.User))
+    view.RenderView(w, name, "base", nil)
   }
 }
 

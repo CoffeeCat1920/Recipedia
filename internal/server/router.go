@@ -65,7 +65,7 @@ func (s *Server) RegisterRouts() http.Handler {
   r.HandleFunc("/view/signup", web.Render("signup", nil))
   r.HandleFunc("/view/login", web.Render("login", nil))
   r.HandleFunc("/view/upload-recipe", web.Render("upload-recipe", nil))
-  r.HandleFunc("view/dashboard", api.Authorize( web.RenderSecure("search") ))  
+  r.HandleFunc("/view/dashboard", api.Authorize( web.Render("dashboard", nil) ))  
   // r.HandleFunc("/view/index", web.IndexHandler)
 
   // Api
