@@ -9,7 +9,7 @@ func (s* service) AddSession(session *modals.Session) (error) {
   query := fmt.Sprintf(`
     INSERT INTO sessions(sessionid, ownerid, exp) 
     VALUES('%s', '%s', '%s')
-  `, session.SessionId, session.OwnerId, session.Exp.String())
+  `, session.SessionId, session.OwnerId, session.Exp)
 
   _, err := s.db.Exec(query) 
 
@@ -20,16 +20,17 @@ func (s* service) AddSession(session *modals.Session) (error) {
   return nil
 }
 
+
 func (s *service)GetSession(sessionId string) (*modals.Session, error) {
   var session modals.Session
-  row := s.db.QueryRow(`SELECT * FROM sessions WHERE sessionid = '%s';`, sessionId)
+  query := fmt.Sprintf("SELECT * FROM sessions WHERE sessionid = '%s';", sessionId)
+  row := s.db.QueryRow(query)
   err := row.Scan(&session.SessionId, &session.OwnerId, &session.Exp)
-  
-  fmt.Printf("\nTaken Session from db - %s\n", session.SessionId)
 
   if err != nil {
     return nil, err 
   }
+
   return &session, nil
 }
 

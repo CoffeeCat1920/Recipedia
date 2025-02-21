@@ -8,12 +8,7 @@
   <link rel="stylesheet" href="https://cdn.simplecss.org/simple-v1.css">
   <script src="https://unpkg.com/htmx.org@2.0.4"></script>
 
-  <nav>
-    <a href="/view/search">Home</a>
-    <a href="/view/signup">Sign up</a>
-    <a href="/view/login">Login</a>
-    <a href="/view/upload-recipe">Upload Recipe</a>
-  </nav>
+  {{ template "topbar" . }}
 
   {{ template "head" . }}
 

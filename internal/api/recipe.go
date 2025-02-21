@@ -14,6 +14,7 @@ func AddRecipe(w http.ResponseWriter, r *http.Request) {
   ownerId, err := database.New().GetUserUUid(r.PostFormValue("ownername"))
   if err != nil {
     http.Error(w, "Can't find user of name" + r.PostFormValue("ownername"), 404)
+    return
   }
 
   recipe := modals.NewRecipe(name, ownerId)
@@ -21,6 +22,7 @@ func AddRecipe(w http.ResponseWriter, r *http.Request) {
   err = database.New().AddRecipe(recipe)
   if err != nil {
     http.Error(w, "Can't find user of name" + r.PostFormValue("ownername"), 404)
+    return
   }
 
   http.Redirect(w, r, "/view/search", 302)

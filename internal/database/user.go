@@ -30,7 +30,7 @@ func (s *service) GetUserUUid(name string) (string, error) {
 }
 
 func (s *service) GetUserByName(name string) (*modals.User, error) {
-  user := &modals.User{}
+  var user modals.User
 
   query := fmt.Sprintf("SELECT * FROM users WHERE name = '%s';", name)
   row := s.db.QueryRow(query)
@@ -40,11 +40,11 @@ func (s *service) GetUserByName(name string) (*modals.User, error) {
     return nil, err 
   }
 
-  return user, nil
+  return &user, nil
 }
 
 func (s *service) GetUserByUUid(uuid string) (*modals.User, error) {
-  user := &modals.User{}
+  var user modals.User
 
   query := fmt.Sprintf("SELECT * FROM users WHERE uuid = '%s';", uuid)
   row := s.db.QueryRow(query)
@@ -54,5 +54,5 @@ func (s *service) GetUserByUUid(uuid string) (*modals.User, error) {
     return nil, err 
   }
 
-  return user, nil
+  return &user, nil
 }

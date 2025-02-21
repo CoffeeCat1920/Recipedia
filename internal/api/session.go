@@ -1,98 +1,94 @@
 package api
 
 import (
-	// "context"
 	"fmt"
 	"net/http"
 	"shiro/internal/database"
 	"shiro/internal/modals"
-
 )
 
-func setCookie(w http.ResponseWriter, user *modals.User) {
-  s := modals.NewSession(user.UUID)
-
-  err := database.New().AddSession(s)
+func createCookie(w http.ResponseWriter, ownerId string) (*modals.Session) {
+  session := modals.NewSession(ownerId) 
+  exp, err := session.GetExpTime()
   if err != nil {
     panic(err)
   }
 
   http.SetCookie(w, &http.Cookie{
-    Name: "sessionCookie",
-    Value: s.SessionId,
-    Expires: s.Exp,
-    HttpOnly: true,                
-    Secure:   true,                 
-    SameSite: http.SameSiteStrictMode, 
-    Path:     "/",   
+    Name: "session-token",
+    Value: session.SessionId,
+    Expires: exp,
+    Path:     "/",           // Add this
+    HttpOnly: true,          // Add this
+    SameSite: http.SameSiteLaxMode,  // Add this
   })
+  return session
 }
 
-// TODO: Better errors for login stuff
 func VerifyUser(w http.ResponseWriter, r *http.Request) {
-  r.ParseForm()
-  userName := r.PostFormValue("name")
-  userPassword := r.PostFormValue("password")
-  
-  user, err := database.New().GetUserByName(userName)
+  r.ParseForm()  
+  username := r.PostFormValue("name")
+  password := r.PostFormValue("password")
+
+  db := database.New()
+   
+  user, err := db.GetUserByName(username)
   if err != nil {
-    fmt.Print("\nCan't find User in db\n")
+    fmt.Printf("\nCan't find user\n")
+    http.Redirect(w, r, "/view/login", 302)
     return
   }
-  fmt.Print("\nVarifying User " + user.Name)
-
-  check := user.CheckPassword(userPassword)
-  if !check {
-    fmt.Print("\nWrong password\n")
+  if !user.CheckPassword(password) {
+    fmt.Printf("\nPassword Incorrect\n")
     http.Redirect(w, r, "/view/login", 302)
-  } else {
-    fmt.Print("\nCorrect password\n")
-    setCookie(w, user) 
-    http.Redirect(w, r, "/view/dashboard", 303)
+    return
+  } 
+  
+  session := createCookie(w, user.UUID)
+  err = db.AddSession(session)
+  if err != nil {
+    panic(err)
   }
+
+  fmt.Printf("\nSession created and cookie set. Session ID: %s, User UUID: %s\n", session.SessionId, user.UUID)
+  http.Redirect(w, r, "/view/dashboard", 302)
 }
 
-// NOTE: Test fucntiont to test secure paths
-func authorize(r *http.Request) (*modals.User, error) {
-  c, err := r.Cookie("sessionCookie")
+func auth(r *http.Request) (*modals.Session, error) {
+  cookie, err := r.Cookie("session-token")
   if err != nil {
-    return nil, err
-  }
-
-  sessionToken := c.Value
-  fmt.Printf("\nThis is the session toke - %s\n", sessionToken)
-  session, err := database.New().GetSession(sessionToken)
-  if err != nil {
+    fmt.Printf("\nCan't find cookie\n")
     return nil, err 
   }
+  sessionid := cookie.Value
+  session, err := database.New().GetSession(sessionid)
+  if err != nil {
+    fmt.Printf("\nCan't find session %s in db case, %s\n", sessionid, err.Error())
+    return nil, err 
+  }
+  return session, nil
+} 
 
-  fmt.Printf("\nThis is the session toke in the database - %s\n", sessionToken)
-  fmt.Printf("\nThis is the ownerid in the database - %s\n", sessionToken)
-  
-  // if session.IsExpired() {
-  //   err = database.New().DeleteSession(sessionToken)
-  //   return nil, err 
-  // } 
-  
-  // if err != nil {
-  //   return nil, err 
-  // }
-  user, err  := database.New().GetUserByUUid(session.OwnerId)
-  return user, nil
+func IsLoggedIn(r *http.Request) (bool) {
+  _, err := auth(r)
+  return err == nil
 }
 
-func Authorize(next http.HandlerFunc) http.HandlerFunc {
+func Auth( next http.HandlerFunc ) http.HandlerFunc {
   return func(w http.ResponseWriter, r *http.Request) {
-    user, err := authorize(r)
-    if err == nil {
-      fmt.Printf("Can't verify user")
-      http.Redirect(w, r, "/view/login", http.StatusFound)
+    session, err := auth(r)
+    if err != nil {
+      http.Redirect(w, r, "/view/login", 302)
+      return
+    }
+
+    user, err := database.New().GetUserByUUid(session.OwnerId)
+    if err != nil {
+      fmt.Printf("Error adding session: %v\n", err)
+      http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+      return
     }
     _ = user
-    // fmt.Printf("Verified user %s", user.Name)
-    // ctx := context.WithValue(r.Context(), "user", user)
-    // next(w, r.WithContext(ctx))
-    // fmt.Printf("\nAuthorized user %s\n", user.Name)
     next(w, r)
   }
 }

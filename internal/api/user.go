@@ -14,6 +14,7 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 
   if err != nil {
     http.Error(w, "Can't add user", 403)
+    return
   }
 
   fmt.Print("\nAdded user")

@@ -1,0 +1,19 @@
+{{ define "topbar" }}
+
+<nav>
+  <a href="/view/search">Home</a>
+
+  {{ if .LoggedIn }}
+
+  <a href="/view/upload-recipe">Upload Recipe</a>
+  <a href="/view/dashboard">Dashboard</a>
+  
+  {{ else }}
+
+  <a href="/view/signup">Sign up</a>
+  <a href="/view/login">Login</a>
+  
+  {{ end }}
+</nav>
+
+{{ end }}
