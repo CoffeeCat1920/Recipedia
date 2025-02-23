@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"shiro/internal/database"
 	"shiro/internal/modals"
+	"time"
 )
 
 func createCookie(w http.ResponseWriter, ownerId string) (*modals.Session) {
@@ -19,6 +20,7 @@ func createCookie(w http.ResponseWriter, ownerId string) (*modals.Session) {
     Value: session.SessionId,
     Expires: exp,
     Path:     "/",           // Add this
+    Domain:   "",
     HttpOnly: true,          // Add this
     SameSite: http.SameSiteLaxMode,  // Add this
   })
@@ -60,12 +62,15 @@ func auth(r *http.Request) (*modals.Session, error) {
     fmt.Printf("\nCan't find cookie\n")
     return nil, err 
   }
+
   sessionid := cookie.Value
   session, err := database.New().GetSession(sessionid)
   if err != nil {
     fmt.Printf("\nCan't find session %s in db case, %s\n", sessionid, err.Error())
     return nil, err 
   }
+
+  fmt.Printf("\nFond session %s in db\n", sessionid)
   return session, nil
 } 
 
@@ -73,6 +78,69 @@ func IsLoggedIn(r *http.Request) (bool) {
   _, err := auth(r)
   return err == nil
 }
+
+func LogInfo(r *http.Request) (interface{}, error) {
+  session, err := auth(r) 
+  if err != nil {
+    return nil, err
+  }
+
+  user, err := database.New().GetUserByUUid(session.OwnerId)
+  if err != nil {
+    return nil, err
+  }
+
+  data := struct {
+    Username string
+  }{
+    Username: user.Name,
+  }
+  
+  return data, nil
+} 
+
+func LogOut(w http.ResponseWriter, r *http.Request) {
+  session, err := auth(r) 
+  if err != nil {
+    fmt.Printf("\nCan't Autherize session with id %s in db", session.SessionId)
+    http.Error(w, "Can't Logout", http.StatusInternalServerError)
+    return 
+  }
+
+  err = database.New().DeleteSession(session.SessionId)
+  if err != nil {
+    fmt.Printf("\nCan't delete Session %s in db cause,\n%s", session.SessionId, err.Error())
+    http.Error(w, "Can't Logout", http.StatusInternalServerError)
+    return 
+  }
+
+  http.SetCookie(w, &http.Cookie{
+    Name:     "session-token",
+    Value:    "",
+    Expires:  time.Unix(0, 0), // Expire immediately
+    Path:     "/",
+    HttpOnly: true,
+    SameSite: http.SameSiteLaxMode,
+  })
+
+  http.Redirect(w, r, "/view/login", 302)
+  return 
+}
+
+func logedUser(r *http.Request) (*modals.User, error) {
+  session, err := auth(r) 
+  if err != nil {
+    return nil, err
+  }
+
+  user, err := database.New().GetUserByUUid(session.OwnerId)
+  if err != nil {
+    return nil, err
+  }
+
+  return user, nil
+}
+
 
 func Auth( next http.HandlerFunc ) http.HandlerFunc {
   return func(w http.ResponseWriter, r *http.Request) {

@@ -35,12 +35,20 @@ func (s *service)GetSession(sessionId string) (*modals.Session, error) {
 }
 
 
-func (s *service) DeleteSession(sessionId string) (error) {
-  _, err := s.db.Exec(`DELETE FROM sessions WHERE sessionid = '%s';`, sessionId)
+// func (s *service) DeleteSession(sessionId string) (error) {
+//   _, err := s.db.Exec(`DELETE FROM sessions WHERE sessionid = '%s';`, sessionId)
 
+//   if err != nil {
+//     return  err 
+//   } else {
+//     return nil
+//   }
+// }
+
+func (s *service) DeleteSession(sessionId string) error {
+  _, err := s.db.Exec("DELETE FROM sessions WHERE sessionid = $1;", sessionId)
   if err != nil {
-    return  err 
-  } else {
-    return nil
+    fmt.Printf("Error deleting session: %v\n", err)
   }
+  return err
 }

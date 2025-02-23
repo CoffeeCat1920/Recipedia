@@ -14,6 +14,7 @@ func init() {
     views = make(map[string]*template.Template)
   }
 
+  views["index"] = template.Must(template.ParseFiles("web/templ/topbar.html", "web/view/index.html", "web/view/base.html"))
   views["search"] = template.Must(template.ParseFiles("web/templ/topbar.html", "web/view/search.html", "web/view/base.html"))
   views["signup"] = template.Must(template.ParseFiles("web/templ/topbar.html", "web/view/signup.html", "web/view/base.html"))
   views["login"] = template.Must(template.ParseFiles("web/templ/topbar.html", "web/view/login.html", "web/view/base.html"))
@@ -31,15 +32,19 @@ func RenderView( w http.ResponseWriter, r *http.Request, name string, tmpl strin
   }
   
   isLoggedIn := api.IsLoggedIn(r)
+  logInfo, err := api.LogInfo(r)
+
   data := struct {
     LoggedIn  bool
+    LogInfo interface{}
     ViewModel interface{}
   }{
     LoggedIn:  isLoggedIn,
+    LogInfo: logInfo,
     ViewModel: viewModel,
   }
 
-  err := temp.ExecuteTemplate(w, tmpl, data) 
+  err = temp.ExecuteTemplate(w, tmpl, data) 
   if err != nil {
     fmt.Printf("Can't find Page named %s", name )
     http.Error(w, "Can't find page of name " + name, 404)
