@@ -17,7 +17,33 @@ func (s* service) AddRecipe(recipe *modals.Recipe) (error)  {
   return nil
 }
 
-// TODO: Make it work
+func (s *service) GetRecipe(uuid string) (*modals.Recipe, error) {
+  var recipe modals.Recipe 
+  
+  row, err := s.db.Query("SELECT * FROM recipe WHERE uuid = %s", uuid) 
+  if err != nil {
+    return nil, err
+  }
+
+  err = row.Scan(&recipe.UUID, &recipe.Name, &recipe.OwnerId)
+  if err != nil {
+    return nil, err
+  }
+
+  return &recipe, nil
+}
+
+func (s *service) DeleteRecipe(uuid string) error {
+  _, err := s.db.Query("DELETE * FROM recipe WHERE uuid = %s", uuid) 
+
+  if err != nil {
+    return  err
+  }
+
+  return nil
+}
+
+// DONE: Make it work
 func (s *service) GetAllRecipes() (*[]modals.Recipe, error) {
   var Recipes []modals.Recipe
 

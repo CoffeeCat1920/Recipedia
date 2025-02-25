@@ -20,7 +20,6 @@ func (s* service) AddSession(session *modals.Session) (error) {
   return nil
 }
 
-
 func (s *service)GetSession(sessionId string) (*modals.Session, error) {
   var session modals.Session
   query := fmt.Sprintf("SELECT * FROM sessions WHERE sessionid = '%s';", sessionId)
@@ -33,17 +32,6 @@ func (s *service)GetSession(sessionId string) (*modals.Session, error) {
 
   return &session, nil
 }
-
-
-// func (s *service) DeleteSession(sessionId string) (error) {
-//   _, err := s.db.Exec(`DELETE FROM sessions WHERE sessionid = '%s';`, sessionId)
-
-//   if err != nil {
-//     return  err 
-//   } else {
-//     return nil
-//   }
-// }
 
 func (s *service) DeleteSession(sessionId string) error {
   _, err := s.db.Exec("DELETE FROM sessions WHERE sessionid = $1;", sessionId)

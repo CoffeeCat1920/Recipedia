@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Monomakh&family=Roboto:wght@100..900&display=swap');
+
+:root {
+  
+  /* Dark shades for backgrounds and structure */
+  --dark0: #2e3440;
+  --dark1: #3b4252;
+  --dark2: #434c5e;
+  --dark3: #4c566a;
+
+  /* Light shades for text and UI */
+  --light0: #d8dee9;
+  --light1: #e5e9f0;
+  --light2: #eceff4;
+
+  /* Blue accents */
+  --blue0: #8fbcbb; /* Classes, types */
+  --blue1: #88c0d0; /* Primary UI, links */
+  --blue2: #81a1c1; /* Keywords, tags */
+  --blue3: #5e81ac; /* Imports, at-rules */
+
+  /* Warm accents */
+  --red: #bf616a;   /* Errors, deletions */
+  --orange: #d08770; /* Annotations */
+  --yellow: #ebcb8b; /* Warnings, regex */
+  --green: #a3be8c;  /* Strings, success */
+  --purple: #b48ead; /* Numbers */
+
+  --background: var(--dark0);
+
+}
+
+/* Roboto default class */
+.roboto {
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  font-weight: normal;
+  background-color: var(--background);
+  color: var(--light0);
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  padding: 20px;
+}
+
+h1, h2 {
+  font-family: "Monomakh", serif;
+  text-align: center;
+}
+
+h1 {
+  font-weight: bold;
+  font-size: 64px;
+}
+
+h2 {
+  font-weight: normal;
+  padding: 20px;
+}
+
+.search-bar {
+  width: 200px;
+  margin: auto 0;
+}
+
+.brand {
+  font-family: "Monomakh", serif;
+  font-weight: bold;
+  color: black;
+}
+
+
+
+/* Navbar Styling */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+  background-color: var(--dark1);
+  color: var(--light2);
+}

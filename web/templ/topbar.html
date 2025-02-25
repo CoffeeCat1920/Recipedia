@@ -1,20 +1,49 @@
 {{ define "topbar" }}
 
-<nav>
-  <a href="/view/search">Home</a>
+<nav class="navbar">
 
-  {{ if .LoggedIn }}
+  <div>
 
-  <a href="/view/upload-recipe">Upload Recipe</a>
-  <a href="/view/dashboard">Dashboard</a>
-  <a href="/api/log-out">Logout</a>
-  
-  {{ else }}
+    <a class="brand" href="/view/home">Recipidia</a>
 
-  <a href="/view/signup">Sign up</a>
-  <a href="/view/login">Login</a>
-  
-  {{ end }}
+    <div class="nav-links">
+
+      <ul class="nav-list">
+
+        <li class="nav-item"><a href="/view/home">Home</a></li>
+
+        {{ if .LoggedIn }}
+
+        <li class="nav-item"><a href="/view/upload-recipe">Upload Recipe</a></li>
+        <li class="nav-item"><a href="/view/dashboard">Dashboard</a></li>
+
+        {{ end }}
+
+      </ul>
+
+    </div>
+
+    <div class="auth-links">
+
+      <ul class="nav-list">
+
+        {{ if .LoggedIn }}
+
+        <li class="nav-item"><a href="/api/log-out">Logout</a></li>
+
+        {{ else }}
+
+        <li class="nav-item"><a href="/view/signup">SignUp</a></li>
+        <li class="nav-item"><a href="/view/login">Login</a></li>
+
+        {{ end }}
+
+      </ul>
+
+    </div>
+
+  </div>
+
 </nav>
 
 {{ end }}

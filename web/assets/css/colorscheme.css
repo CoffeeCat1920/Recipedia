@@ -1,0 +1,25 @@
+:root {
+  /* Dark shades for backgrounds and structure */
+  --dark0: #2e3440;
+  --dark1: #3b4252;
+  --dark2: #434c5e;
+  --dark3: #4c566a;
+
+  /* Light shades for text and UI */
+  --light0: #d8dee9;
+  --light1: #e5e9f0;
+  --light2: #eceff4;
+
+  /* Blue accents */
+  --blue0: #8fbcbb; /* Classes, types */
+  --blue1: #88c0d0; /* Primary UI, links */
+  --blue2: #81a1c1; /* Keywords, tags */
+  --blue3: #5e81ac; /* Imports, at-rules */
+
+  /* Warm accents */
+  --red: #bf616a;   /* Errors, deletions */
+  --orange: #d08770; /* Annotations */
+  --yellow: #ebcb8b; /* Warnings, regex */
+  --green: #a3be8c;  /* Strings, success */
+  --purple: #b48ead; /* Numbers */
+}

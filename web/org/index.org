@@ -1,0 +1,4 @@
+#+TITLE: Recepedia
+#+SUBTITLE: The best place to find and share recipes
+* About
+We are recepedia. The best place to independently share your every recepie, no matter if you are a home chef, a professional or just starting out with your stoves and knifes.

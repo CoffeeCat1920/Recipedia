@@ -5,8 +5,8 @@ tmp_dir = "temp"
   cmd = "go build -o ./temp/main cmd/main.go"
   bin = "./temp/main"
   full_bin = "./temp/main"
-  include_ext = ["go", "templ", "view"]
-  exclude_dir = ["assets", "vendor"]
+  include_ext = ["go", "templ"]
+  # exclude_dir = ["assets", "vendor"]
   kill_delay = "5s"
   log = "build-errors.log"
 
