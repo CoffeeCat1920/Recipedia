@@ -6,7 +6,7 @@ import (
 )
 
 func (s* service) AddRecipe(recipe *modals.Recipe) (error)  {
-  query := fmt.Sprintf("INSERT INTO recipes(uuid, name, ownerid) VALUES('%s', '%s', '%s');", recipe.UUID, recipe.Name, recipe.OwnerId)
+  query := fmt.Sprintf("INSERT INTO recipes(uuid, name, ownerid, views) VALUES('%s', '%s', '%s', 0);", recipe.UUID, recipe.Name, recipe.OwnerId)
 
   _, err := s.db.Exec(query) 
 
@@ -43,14 +43,37 @@ func (s *service) DeleteRecipe(uuid string) error {
   return nil
 }
 
-// DONE: Make it work
-func (s *service) GetAllRecipes() (*[]modals.Recipe, error) {
-  var Recipes []modals.Recipe
+func (s *service) MostViewedRecipes() ([]modals.Recipe, error) {
 
-  rows, err := s.db.Query("SELECT uuid, name, ownerId FROM recipes")
+  var recipes []modals.Recipe
+
+  rows, err := s.db.Query("SELECT * FROM recipes ORDER BY views LIMIT 10;")
   if err != nil {
     return nil, err
   }
+  defer rows.Close()
+
+  for rows.Next() {
+    var recipe modals.Recipe
+    err := rows.Scan(&recipe.UUID, &recipe.Name, &recipe.OwnerId, &recipe.Views)
+    if err != nil {
+      return nil, err
+    }
+    recipes = append(recipes, recipe) 
+  }
+
+  return recipes, nil
+} 
+
+func (s *service) SearchRecipe(name string) ([]modals.Recipe, error) {
+  var recipes []modals.Recipe
+
+  rows, err := s.db.Query("SELECT * FROM recipes WHERE name ILIKE '%%s%'", name)
+
+  if err != nil {
+    return nil, err
+  }
+
   defer rows.Close()
 
   for rows.Next() {
@@ -59,13 +82,12 @@ func (s *service) GetAllRecipes() (*[]modals.Recipe, error) {
     if err != nil {
       return nil, err
     }
-    Recipes = append(Recipes, recipe)
+    recipes = append(recipes, recipe)
   }
 
   if err := rows.Err(); err != nil {
     return nil, err
   }
 
-  return &Recipes, nil
+  return recipes, nil
 }
-

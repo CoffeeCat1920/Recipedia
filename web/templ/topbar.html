@@ -2,45 +2,28 @@
 
 <nav class="navbar">
 
-  <div>
+  <a class="brand" href="/view/home">Recipidia</a>
 
-    <a class="brand" href="/view/home">Recipidia</a>
+  <div class="nav-links">
 
-    <div class="nav-links">
+    <ul class="nav-list">
 
-      <ul class="nav-list">
+      <li class="left-just" ><a href="/view/home">Home</a></li>
 
-        <li class="nav-item"><a href="/view/home">Home</a></li>
+      {{ if .LoggedIn }}
 
-        {{ if .LoggedIn }}
+      <li class="left-just" ><a href="/view/upload-recipe">Upload Recipe</a></li>
+      <li class="left-just" ><a href="/view/dashboard">Dashboard</a></li>
+      <li class="left-just" ><a href="/api/log-out">Logout</a></li>
 
-        <li class="nav-item"><a href="/view/upload-recipe">Upload Recipe</a></li>
-        <li class="nav-item"><a href="/view/dashboard">Dashboard</a></li>
+      {{ else }}
 
-        {{ end }}
+      <li class="left-just" ><a href="/view/signup">SignUp</a></li>
+      <li class="left-just" ><a href="/view/login">Login</a></li>
 
-      </ul>
+      {{ end }}
 
-    </div>
-
-    <div class="auth-links">
-
-      <ul class="nav-list">
-
-        {{ if .LoggedIn }}
-
-        <li class="nav-item"><a href="/api/log-out">Logout</a></li>
-
-        {{ else }}
-
-        <li class="nav-item"><a href="/view/signup">SignUp</a></li>
-        <li class="nav-item"><a href="/view/login">Login</a></li>
-
-        {{ end }}
-
-      </ul>
-
-    </div>
+    </ul>
 
   </div>
 

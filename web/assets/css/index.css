@@ -1,33 +1,46 @@
 @import url('https://fonts.googleapis.com/css2?family=Monomakh&family=Roboto:wght@100..900&display=swap');
 
 :root {
-  
-  /* Dark shades for backgrounds and structure */
-  --dark0: #2e3440;
-  --dark1: #3b4252;
-  --dark2: #434c5e;
-  --dark3: #4c566a;
 
-  /* Light shades for text and UI */
-  --light0: #d8dee9;
-  --light1: #e5e9f0;
-  --light2: #eceff4;
+  --bg_h: #f9f5d7;
+  --bg:   #fbf1c7;
+  --bg_s: #f2e5bc;
+  --bg1:  #ebdbb2;
+  --bg2:  #d5c4a1;
+  --bg3:  #bdae93;
+  --bg4:  #a89984;
 
-  /* Blue accents */
-  --blue0: #8fbcbb; /* Classes, types */
-  --blue1: #88c0d0; /* Primary UI, links */
-  --blue2: #81a1c1; /* Keywords, tags */
-  --blue3: #5e81ac; /* Imports, at-rules */
+  --fg:  #282828;
+  --fg1: #3c3836;
+  --fg2: #504945;
+  --fg3: #665c54;
+  --fg4: #7c6f64;
 
-  /* Warm accents */
-  --red: #bf616a;   /* Errors, deletions */
-  --orange: #d08770; /* Annotations */
-  --yellow: #ebcb8b; /* Warnings, regex */
-  --green: #a3be8c;  /* Strings, success */
-  --purple: #b48ead; /* Numbers */
+  --red:    #9d0006;
+  --green:  #79740e;
+  --yellow: #b57614;
+  --blue:   #076678;
+  --purple: #8f3f71;
+  --aqua:   #427b58;
+  --orange: #af3a03;
+  --gray:   #928374;
 
-  --background: var(--dark0);
+  --red-dim:    #cc2412;
+  --green-dim:  #98971a;
+  --yellow-dim: #d79921;
+  --blue-dim:   #458598;
+  --purple-dim: #b16286;
+  --aqua-dim:   #689d6a;
+  --orange-dim: #d65d0e;
+  --gray-dim:   #7c6f64;
 
+  --background: var(--bg_h);
+  --text: var(--fg);
+  --primary: var(--aqua);
+
+  --background-light: var(--bg);
+  --text-light: var(--fg0);
+  --primary-light: var(--aqua-dim);
 }
 
 /* Roboto default class */
@@ -56,7 +69,7 @@ h1, h2 {
   text-align: center;
 }
 
-h1 {
+.logo {
   font-weight: bold;
   font-size: 64px;
 }
@@ -67,19 +80,15 @@ h2 {
 }
 
 .search-bar {
+  display: flex;
+}
+
+.search-bar input {
   width: 200px;
-  margin: auto 0;
 }
-
-.brand {
-  font-family: "Monomakh", serif;
-  font-weight: bold;
-  color: black;
-}
-
-
 
 /* Navbar Styling */
+
 .navbar {
   display: flex;
   align-items: center;
@@ -87,4 +96,115 @@ h2 {
   padding: 15px 20px;
   background-color: var(--dark1);
   color: var(--light2);
+}
+
+.brand {
+  font-family: "Monomakh", serif;
+  font-weight: bold;
+  font-size: 25px;
+  text-decoration: none;
+  color: var(--blue0);
+}
+
+.nav-links {
+  display: flex;
+  align-items: auto;
+}
+
+.nav-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-list li {
+  float: left;
+}
+
+.nav-list li a {
+  text-decoration: none;
+  display: block;
+  padding: 8px;
+  color: var(--light3);
+}
+
+.nav-list li a:hover {
+  color: var(--primary);
+}
+
+
+.search-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* Space between input and button */
+  margin-top: 15px;
+}
+
+.search-input {
+  width: 300px;
+  padding: 10px 15px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  background-color: var(--text-light);
+  color: var(--background-light);
+}
+
+.search-input:focus {
+  border-color: var(--primary); 
+}
+
+.search-button {
+  background-color: var(--primary);
+  color: var(--text);
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.search-button:hover {
+  background-color: var(--primary-light);
+}
+
+.search-button:active {
+  transform: var(--primary-light);
+}
+
+
+/* Container for the cards */
+.recipe-container {
+    display: flex; /* Flexbox for horizontal alignment */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    justify-content: center; /* Center content horizontally */
+    gap: 20px; /* Spacing between cards */
+    padding: 20px;
+}
+
+/* Individual Recipe Cards */
+.recipe-card {
+  width: 150px; /* Fixed width */
+  padding: 15px;
+  background: var(--background-light);
+  color: var(--text-light);
+  text-align: left;
+  transition: transform 0.3s ease-in-out;
+}
+
+.recipe-card:hover {
+  transform: scale(1.05);
+}
+
+/* Recipe Name Styling */
+.recipe-name {
+  font-family: "Monomakh";
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+/* Recipe Views Styling */
+.recipe-views {
+  font-size: 16px;
 }

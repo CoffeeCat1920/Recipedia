@@ -8,6 +8,7 @@ type Recipe struct {
   UUID string `json:"uuid"` 
   Name string `json:"name"`
   OwnerId string `json:"ownerId"`
+  Views int `json:"views"`
 }
 
 func NewRecipe(name string, ownerId string) *Recipe{
@@ -16,6 +17,7 @@ func NewRecipe(name string, ownerId string) *Recipe{
     UUID: uuid.NewString(),
     Name: name,
     OwnerId: ownerId,
+    Views: 0,
   }
 
   return recipe

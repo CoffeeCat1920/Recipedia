@@ -1,7 +1,9 @@
 package web
 
 import (
+	"fmt"
 	"net/http"
+	"shiro/internal/database"
 	"shiro/web/view"
 )
 
@@ -11,17 +13,12 @@ func Render(name string, data interface{}) func(w http.ResponseWriter, r *http.R
   }
 }
 
-// func RenderSecure(name string) func(w http.ResponseWriter, r *http.Request) {
-//   return func(w http.ResponseWriter, r *http.Request) {
-//     view.RenderView(w, r, name, "base", nil)
-//   }
-// }
-
-// func IndexHandler(w http.ResponseWriter, r *http.Request) {
-//   recipes, err := database.New().GetAllRecipes() 
-//   if err != nil {
-//     http.Error(w, "No recipes Found", 404)
-//     return
-//   }
-//   view.RenderView(w, "index", "base", recipes)
-// } 
+func MostViewHandler(w http.ResponseWriter, r *http.Request) {
+  recipes, err := database.New().MostViewedRecipes()
+  if err != nil {
+    http.Error(w, "Can't get the most viewed recipes", http.StatusInternalServerError)
+    fmt.Printf("Can't get the most viewed recipes cause, %s", err.Error())
+    return
+  }
+  view.RenderView(w, r, "mostViewed", "base", recipes)
+}

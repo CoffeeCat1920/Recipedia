@@ -19,7 +19,10 @@ type Service interface {
   
   // Recipes
   AddRecipe(recipe *modals.Recipe) (error)  
-  GetAllRecipes() (*[]modals.Recipe, error) 
+  GetRecipe(uuid string) (*modals.Recipe, error) 
+  DeleteRecipe(uuid string) error 
+  MostViewedRecipes() ([]modals.Recipe, error) 
+  SearchRecipe(name string) ([]modals.Recipe, error) 
 
   // Session
   AddSession(session *modals.Session) (error)

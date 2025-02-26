@@ -6,13 +6,15 @@
 
 {{ define "body" }}
 
-<div class="header p-5">
+<div class="header">
 
-  <h1>Recepidia</h1>
+  <h1 class="logo">Recepidia</h1>
   <h2>What to have today?</h2>
 
-  <input class="search-bar" placeholder="Search" aria-label="Search">
-  <button type="button">search</button>
+  <form class="search-bar" action="#">
+    <input class="search-input" type="text" placeholder="Search" aria-label="Search">
+    <button class="search-button" type="submit">Search</button>
+  </form>
 
 </div>
 

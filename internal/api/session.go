@@ -65,6 +65,7 @@ func auth(r *http.Request) (*modals.Session, error) {
 
   sessionid := cookie.Value
   session, err := database.New().GetSession(sessionid)
+
   if err != nil {
     fmt.Printf("\nCan't find session %s in db case, %s\n", sessionid, err.Error())
     return nil, err 
@@ -101,6 +102,7 @@ func LogInfo(r *http.Request) (interface{}, error) {
 
 func LogOut(w http.ResponseWriter, r *http.Request) {
   session, err := auth(r) 
+
   if err != nil {
     fmt.Printf("\nCan't Autherize session with id %s in db", session.SessionId)
     http.Error(w, "Can't Logout", http.StatusInternalServerError)
