@@ -25,7 +25,7 @@ func (s *service) GetRecipe(uuid string) (*modals.Recipe, error) {
     return nil, err
   }
 
-  err = row.Scan(&recipe.UUID, &recipe.Name, &recipe.OwnerId)
+  err = row.Scan(&recipe.UUID, &recipe.Name, &recipe.OwnerId, 0)
   if err != nil {
     return nil, err
   }
@@ -90,4 +90,16 @@ func (s *service) SearchRecipe(name string) ([]modals.Recipe, error) {
   }
 
   return recipes, nil
+}
+
+func (s *service) RecipeAddView(uuid string) error {
+  q := "UPDATE recipes SET views = views + 1 WHERE uuid = $1;"
+
+  _, err := s.db.Exec(q, uuid)
+  if err != nil {
+    return err
+  }
+
+  fmt.Printf("Added view for recipe with UUID %s\n", uuid)
+  return nil
 }

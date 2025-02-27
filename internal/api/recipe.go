@@ -94,10 +94,21 @@ func AddRecipe(w http.ResponseWriter, r *http.Request) {
 	}
 
   // Creating an html file
+
+
   htmlContent := markdown.ToHTML([]byte(content), nil, nil)
+  
+  templateContent := fmt.Sprintf(`{{ define "head" }}
+  <title> %s </title>
+  {{ end }}
+  {{ define "body" }}
+  ` + string(htmlContent) + `
+  {{ end }}`, recipe.Name)
+  
+
   htmlFile := directoryPath + "/recipe.html"  
   if !fileExists(htmlFile) {
-    err = os.WriteFile(htmlFile, htmlContent, fs.ModePerm)
+    err = os.WriteFile(htmlFile, []byte(templateContent), fs.ModePerm)
     if err != nil {
       panic(err)
     }
@@ -108,5 +119,7 @@ func AddRecipe(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("Recipe content:\n%s\n", content)
 
 	// Redirect user
-	http.Redirect(w, r, "/view/dashboard", http.StatusFound)
+  url := "/view/recipe/" + recipe.UUID
+
+	http.Redirect(w, r, url, http.StatusFound)
 }

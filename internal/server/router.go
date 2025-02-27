@@ -14,12 +14,17 @@ func (s *Server) RegisterRouts() http.Handler {
   r.HandleFunc("/test", web.Render("test", nil))
 
   // Homepage
-  r.HandleFunc("/", web.Render("index", nil))
-  r.HandleFunc("/view/home", web.Render("index", nil))
+  r.HandleFunc("/", web.IndexHandler)
+  r.HandleFunc("/view/home", web.IndexHandler)
+
+  // Views
   r.HandleFunc("/view/search", web.Render("search", nil))
   r.HandleFunc("/view/signup", web.Render("signup", nil))
   r.HandleFunc("/view/login", web.Render("login", nil))
   r.HandleFunc("/view/mostViewed", web.MostViewHandler)
+
+  // Recipes
+  r.HandleFunc("/view/recipe/{id}", web.RecipeHandler)
 
   // Secure Views
   r.HandleFunc("/view/upload-recipe", api.Auth( web.Render("upload-recipe", nil) ))

@@ -23,6 +23,7 @@ type Service interface {
   DeleteRecipe(uuid string) error 
   MostViewedRecipes() ([]modals.Recipe, error) 
   SearchRecipe(name string) ([]modals.Recipe, error) 
+  RecipeAddView(uuid string) (error) 
 
   // Session
   AddSession(session *modals.Session) (error)

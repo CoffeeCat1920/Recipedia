@@ -12,7 +12,6 @@ type Recipe struct {
 }
 
 func NewRecipe(name string, ownerId string) *Recipe{
-  
   recipe := &Recipe{
     UUID: uuid.NewString(),
     Name: name,
@@ -21,5 +20,4 @@ func NewRecipe(name string, ownerId string) *Recipe{
   }
 
   return recipe
-
 }

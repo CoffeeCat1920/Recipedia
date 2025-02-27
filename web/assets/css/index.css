@@ -43,6 +43,68 @@
   --primary-light: var(--aqua-dim);
 }
 
+@media (prefers-color-scheme: dark) {
+
+  :root {
+    --bg_h: #1d2021;
+    --bg:   #282828;
+    --bg_s: #32302f;
+    --bg1:  #3c3836;
+    --bg2:  #504945;
+    --bg3:  #665c54;
+    --bg4:  #7c6f64;
+
+    --fg:  #fbf1c7;
+    --fg1: #ebdbb2;
+    --fg2: #d5c4a1;
+    --fg3: #bdae93;
+    --fg4: #a89984;
+
+    --red:    #fb4934;
+    --green:  #b8bb26;
+    --yellow: #fabd2f;
+    --blue:   #83a598;
+    --purple: #d3869b;
+    --aqua:   #8ec07c;
+    --gray:   #928374;
+    --orange: #fe8019;
+
+    --red-dim:    #cc2412;
+    --green-dim:  #98971a;
+    --yellow-dim: #d79921;
+    --blue-dim:   #458588;
+    --purple-dim: #b16286;
+    --aqua-dim:   #689d6a;
+    --gray-dim:   #a89984;
+    --orange-dim: #d65d0e;
+
+    --background: var(--bg_h);
+    --text: var(--fg);
+    --primary: var(--aqua);
+
+    --background-light: var(--bg);
+    --text-light: var(--fg0);
+    --primary-light: var(--aqua-dim);
+
+  }
+} 
+
+p, ul {
+  margin: 20px 200px; /* Adjust the value as needed */
+}
+
+h3 {
+  margin: 20px 200px; /* Adjust the value as needed */
+}
+
+ol {
+  margin: 20px 200px; /* Adjust the value as needed */
+}
+
+ol li p {
+  margin: 20px 20px; /* Adjust the value as needed */
+}
+
 /* Roboto default class */
 .roboto {
   font-family: "Roboto", sans-serif;
@@ -55,7 +117,7 @@ body {
   font-family: "Roboto", sans-serif;
   font-weight: normal;
   background-color: var(--background);
-  color: var(--light0);
+  color: var(--text);
   margin: 0;
   padding: 0;
 }
@@ -94,8 +156,8 @@ h2 {
   align-items: center;
   justify-content: space-between;
   padding: 15px 20px;
-  background-color: var(--dark1);
-  color: var(--light2);
+  background-color: var(--background-light);
+  color: var(--text-light);
 }
 
 .brand {
@@ -145,11 +207,11 @@ h2 {
   width: 300px;
   padding: 10px 15px;
   font-size: 16px;
-  border: 2px solid #ccc;
+  border: 2px solid var(--background-light);
   outline: none;
   transition: all 0.3s ease-in-out;
-  background-color: var(--text-light);
-  color: var(--background-light);
+  background-color: var(--background-light);
+  color: var(--text);
 }
 
 .search-input:focus {
@@ -158,7 +220,7 @@ h2 {
 
 .search-button {
   background-color: var(--primary);
-  color: var(--text);
+  color: var(--background);
   padding: 10px 20px;
   font-size: 16px;
   border: none;
@@ -173,38 +235,41 @@ h2 {
   transform: var(--primary-light);
 }
 
-
-/* Container for the cards */
 .recipe-container {
-    display: flex; /* Flexbox for horizontal alignment */
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    justify-content: center; /* Center content horizontally */
-    gap: 20px; /* Spacing between cards */
-    padding: 20px;
+  display: flex; /* Flexbox for horizontal alignment */
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  justify-content: center; /* Center content horizontally */
+  gap: 20px; /* Spacing between cards */
+  padding: 20px;
 }
 
-/* Individual Recipe Cards */
+
 .recipe-card {
-  width: 150px; /* Fixed width */
+  min-height: 300px;
+  min-width: 200px;
   padding: 15px;
+  text-align: center;
   background: var(--background-light);
-  color: var(--text-light);
-  text-align: left;
+  color: var(--text-light); /* Ensure text color matches theme */
   transition: transform 0.3s ease-in-out;
+
+  text-decoration: none; /* Remove underline */
+  display: block;
 }
 
 .recipe-card:hover {
   transform: scale(1.05);
 }
 
-/* Recipe Name Styling */
 .recipe-name {
   font-family: "Monomakh";
   font-size: 20px;
   margin-bottom: 10px;
 }
 
-/* Recipe Views Styling */
 .recipe-views {
-  font-size: 16px;
+  font-size: 12px;
+  margin-top: 5px;
+  margin-bottom: 0px;
+  text-align: left;
 }
