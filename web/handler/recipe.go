@@ -1,9 +1,10 @@
-package web 
+package web
 
 import (
 	"fmt"
 	"net/http"
 	"shiro/internal/database"
+	"shiro/internal/modals"
 	"shiro/web/view"
 )
 
@@ -18,19 +19,27 @@ func MostViewHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func SearchRecipes(w http.ResponseWriter, r *http.Request) {
-
   searchterm := r.URL.Query().Get("search")
 
   fmt.Printf("\n%s\n", searchterm)
 
   recipes, err := database.New().SearchRecipe(searchterm)
+
+  searchdata := struct {
+    SearchTerm string
+    Recipes []modals.Recipe  
+  }{
+    SearchTerm: searchterm,
+    Recipes: recipes,
+  }
+
   if err != nil {
     http.Error(w, "No recipes found", http.StatusInternalServerError)
     fmt.Printf("Can't get the searched recipes, %s", err.Error())
     return
   } 
   
-  view.RenderView(w, r, "mostViewed", "base", recipes)
+  view.RenderView(w, r, "mostViewed", "base", searchdata)
 } 
 
 

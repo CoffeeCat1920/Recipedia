@@ -143,6 +143,13 @@ func logedUser(r *http.Request) (*modals.User, error) {
   return user, nil
 }
 
+func LoggedUserName(r *http.Request) (string, error) {
+  user, err := logedUser(r) 
+  if err != nil {
+    return "", nil
+  }
+  return user.Name, nil
+}
 
 func Auth( next http.HandlerFunc ) http.HandlerFunc {
   return func(w http.ResponseWriter, r *http.Request) {

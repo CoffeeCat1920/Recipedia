@@ -1,12 +1,17 @@
 {{ define "head" }}
 
 <title> Dashboard </title>
-<h1> This is the test of creating a dashboard </h1>
 
 {{ end }}
 
 {{ define "body" }}
 
-<p>Hello {{ .LogInfo.Username }} </p>
+<h1>Hello {{ .LogInfo.Username }} </h1>
+<h2>Your Recipes</h2>
+
+
+<div class="recipes">
+  {{ template "userCards" . }}
+</div>
 
 {{ end }}

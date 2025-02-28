@@ -24,6 +24,7 @@ type Service interface {
   MostViewedRecipes() ([]modals.Recipe, error) 
   SearchRecipe(name string) ([]modals.Recipe, error) 
   RecipeAddView(uuid string) (error) 
+  GetRecipesByUser(username string) ([]modals.Recipe, error) 
 
   // Session
   AddSession(session *modals.Session) (error)

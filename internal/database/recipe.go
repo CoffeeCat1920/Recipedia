@@ -107,3 +107,28 @@ func (s *service) RecipeAddView(uuid string) error {
   fmt.Printf("Added view for recipe with UUID %s\n", uuid)
   return nil
 }
+
+func (s *service) GetRecipesByUser(username string) ([]modals.Recipe, error) {
+  var recipes []modals.Recipe
+
+  user, err := s.GetUserByName(username) 
+  if err != nil {
+    return nil, err
+  }
+  
+  q := "SELECT * FROM recipes WHERE ownerid = $1" 
+  rows, err := s.db.Query(q, user.UUID)
+
+  for rows.Next() {
+    var recipe modals.Recipe 
+    err := rows.Scan(&recipe.UUID, recipe.Name, recipe.OwnerId, recipe.Views)
+
+    if err != nil {
+      return nil, err
+    }
+
+    recipes = append(recipes, recipe)
+  }
+
+  return recipes, nil
+}

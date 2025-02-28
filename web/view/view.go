@@ -24,7 +24,7 @@ func init() {
   views["login"] = template.Must(template.ParseFiles("web/templ/topbar.html", "web/view/login.html", "web/view/base.html"))
   views["test"] = template.Must(template.ParseFiles("web/templ/topbar.html", "web/recipes/friedRice/recipe.html", "web/view/base.html"))
   views["upload-recipe"] = template.Must(template.ParseFiles("web/templ/topbar.html", "web/view/upload-recipe.html", "web/view/base.html"))
-  views["dashboard"] = template.Must(template.ParseFiles("web/templ/topbar.html", "web/view/dashboard.html", "web/view/base.html"))
+  views["dashboard"] = template.Must(template.ParseFiles("web/templ/topbar.html", "web/templ/userCard.html", "web/view/dashboard.html", "web/view/base.html"))
 
   views["mostViewed"] = template.Must(template.ParseFiles("web/templ/topbar.html", "web/templ/cards.html", "web/view/mostViewed.html", "web/view/base.html"))
 }
@@ -34,7 +34,7 @@ func getData(r *http.Request, viewModel interface{}) (interface{}, error) {
   logInfo, err := api.LogInfo(r)
 
   if err != nil {
-    return nil, err
+    logInfo = nil
   }
 
   data := struct {

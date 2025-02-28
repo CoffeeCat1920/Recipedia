@@ -1,0 +1,17 @@
+{{ define "userCards" }}
+
+<div class="recipe-container">
+
+  {{ range .ViewModel}}
+  <div>
+    <a class="recipe-card" href="/view/recipe/{{ .UUID }}"> 
+      <h3 class="recipe-name">{{ .Name }}</h3>
+      <p class="recipe-views">Views: {{ .Views }}</p>
+      <button type="button">Edit</button>
+    </a>
+  </div>
+  {{ end }}
+
+</div>
+
+{{ end }}

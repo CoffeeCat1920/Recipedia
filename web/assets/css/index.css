@@ -124,6 +124,8 @@ body {
 
 .header {
   padding: 20px;
+  background-color: var(--bg3);
+  border-radius: 0 0 240px 50%/60px;
 }
 
 h1, h2 {
@@ -239,9 +241,9 @@ h2 {
   display: flex; /* Flexbox for horizontal alignment */
   flex-wrap: wrap; /* Allow wrapping on smaller screens */
   justify-content: left; /* Center content horizontally */
-  gap: 50px; /* Spacing between cards */
+  gap: 30px; /* Spacing between cards */
   margin-left: 150px;
-  margin-right: 0px;
+  margin-right: 100px;
 }
 
 

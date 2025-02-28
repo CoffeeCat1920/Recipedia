@@ -2,7 +2,7 @@
 
 <div class="recipe-container">
 
-  {{ range .ViewModel }}
+  {{ range .ViewModel.Recipes}}
   <div>
     <a class="recipe-card" href="/view/recipe/{{ .UUID }}"> 
       <h3 class="recipe-name">{{ .Name }}</h3>
