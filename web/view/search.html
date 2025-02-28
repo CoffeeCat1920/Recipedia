@@ -7,9 +7,14 @@
 {{ end }}
 
 {{ define "body" }}
-
-  <p>
-  <input type="text" name="search-term">
-  </p>
-
+  
+  <form class="search-bar" action="/view/search">
+    <input class="search-input" name="search" type="text" placeholder="Search" aria-label="Search">
+    <button class="search-button">Search</button>
+  </form>
+  
+  <div class="recipes">
+    {{ template "cards" . }}
+  </div>
+  
 {{ end }}

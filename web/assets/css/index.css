@@ -238,15 +238,16 @@ h2 {
 .recipe-container {
   display: flex; /* Flexbox for horizontal alignment */
   flex-wrap: wrap; /* Allow wrapping on smaller screens */
-  justify-content: center; /* Center content horizontally */
-  gap: 20px; /* Spacing between cards */
-  padding: 20px;
+  justify-content: left; /* Center content horizontally */
+  gap: 50px; /* Spacing between cards */
+  margin-left: 150px;
+  margin-right: 0px;
 }
 
 
 .recipe-card {
-  min-height: 300px;
-  min-width: 200px;
+  height: 200px;
+  width: 200px;
   padding: 15px;
   text-align: center;
   background: var(--background-light);
@@ -272,4 +273,12 @@ h2 {
   margin-top: 5px;
   margin-bottom: 0px;
   text-align: left;
+}
+
+.recipe-card h3 {
+  margin: 20px 20px; /* Adjust the value as needed */
+}
+
+.recipe-card p {
+  margin: 20px 20px; /* Adjust the value as needed */
 }

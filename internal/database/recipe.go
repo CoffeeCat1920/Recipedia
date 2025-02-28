@@ -44,7 +44,6 @@ func (s *service) DeleteRecipe(uuid string) error {
 }
 
 func (s *service) MostViewedRecipes() ([]modals.Recipe, error) {
-
   var recipes []modals.Recipe
 
   rows, err := s.db.Query("SELECT * FROM recipes ORDER BY views LIMIT 10;")
@@ -65,20 +64,25 @@ func (s *service) MostViewedRecipes() ([]modals.Recipe, error) {
   return recipes, nil
 } 
 
+
 func (s *service) SearchRecipe(name string) ([]modals.Recipe, error) {
   var recipes []modals.Recipe
 
-  rows, err := s.db.Query("SELECT * FROM recipes WHERE name ILIKE '%%s%'", name)
+  searchTerm := "%" + name + "%" 
+  query := "SELECT * FROM recipes WHERE name ILIKE $1"
 
+  // Log the query and parameter
+  fmt.Println("Executing Query:", query, "with parameter:", searchTerm)
+
+  rows, err := s.db.Query(query, searchTerm)
   if err != nil {
     return nil, err
   }
-
   defer rows.Close()
 
   for rows.Next() {
     var recipe modals.Recipe
-    err := rows.Scan(&recipe.UUID, &recipe.Name, &recipe.OwnerId)
+    err := rows.Scan(&recipe.UUID, &recipe.Name, &recipe.OwnerId, &recipe.Views)
     if err != nil {
       return nil, err
     }
