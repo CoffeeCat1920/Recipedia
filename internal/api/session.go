@@ -8,24 +8,6 @@ import (
 	"time"
 )
 
-func createCookie(w http.ResponseWriter, ownerId string) (*modals.Session) {
-  session := modals.NewSession(ownerId) 
-  exp, err := session.GetExpTime()
-  if err != nil {
-    panic(err)
-  }
-
-  http.SetCookie(w, &http.Cookie{
-    Name: "session-token",
-    Value: session.SessionId,
-    Expires: exp,
-    Path:     "/",           // Add this
-    Domain:   "",
-    HttpOnly: true,          // Add this
-    SameSite: http.SameSiteLaxMode,  // Add this
-  })
-  return session
-}
 
 func VerifyUser(w http.ResponseWriter, r *http.Request) {
   r.ParseForm()  
@@ -146,19 +128,12 @@ func LogedUser(r *http.Request) (*modals.User, error) {
 
 func Auth( next http.HandlerFunc ) http.HandlerFunc {
   return func(w http.ResponseWriter, r *http.Request) {
-    session, err := auth(r)
+    _, err := auth(r)
     if err != nil {
       http.Redirect(w, r, "/view/login", 302)
       return
     }
 
-    user, err := database.New().GetUserByUUid(session.OwnerId)
-    if err != nil {
-      fmt.Printf("Error adding session: %v\n", err)
-      http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-      return
-    }
-    _ = user
     next(w, r)
   }
 }

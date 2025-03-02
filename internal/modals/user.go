@@ -13,18 +13,6 @@ type User struct {
   Password string `json:"password"`
 }
 
-func hashPassword(password string) (string, error) {
-
-  passwordBytes := []byte(password) 
-  hashedPassword, err := bcrypt.GenerateFromPassword(passwordBytes, bcrypt.MinCost)
-
-  if err != nil {
-    return "", err
-  }
-
-  return string(hashedPassword), nil 
-
-}
 
 // TODO - Change it to return an error type
 func (user *User) CheckPassword(password string) (bool) {

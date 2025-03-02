@@ -142,3 +142,36 @@ func (s *service) ChangeRecipeName(uuid string, newName string) (error) {
 
   return nil
 }
+
+func (s *service) NumberOfRecipes() (int, error) {
+  var count int   
+
+  q := "SELECT COUNT(*) FROM recipes"
+  err := s.db.QueryRow(q).Scan(&count)
+  if err != nil {
+    return 0, err 
+  }
+  
+  return count, nil 
+}
+
+func (s *service) GetAllRecipe() ([]modals.Recipe, error) {
+  var recipes []modals.Recipe
+
+  rows, err := s.db.Query("SELECT * FROM recipes;")
+  if err != nil {
+    return nil, err
+  }
+  defer rows.Close()
+
+  for rows.Next() {
+    var recipe modals.Recipe
+    err := rows.Scan(&recipe.UUID, &recipe.Name, &recipe.OwnerId, &recipe.Views)
+    if err != nil {
+      return nil, err
+    }
+    recipes = append(recipes, recipe) 
+  }
+
+  return recipes, nil
+}

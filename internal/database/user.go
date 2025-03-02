@@ -56,3 +56,15 @@ func (s *service) GetUserByUUid(uuid string) (*modals.User, error) {
 
   return &user, nil
 }
+
+func (s *service) NumberOfUsers() (int, error) {
+  var count int   
+
+  q := "SELECT COUNT(*) FROM users"
+  err := s.db.QueryRow(q).Scan(&count)
+  if err != nil {
+    return 0, err 
+  }
+  
+  return count, nil 
+}

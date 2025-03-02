@@ -16,6 +16,7 @@ type Service interface {
   GetUserByUUid(uuid string) (*modals.User, error) 
   GetUserByName(name string) (*modals.User, error) 
   GetUserUUid(name string) (string, error) 
+  NumberOfUsers() (int, error) 
   
   // Recipes
   AddRecipe(recipe *modals.Recipe) (error)  
@@ -26,11 +27,18 @@ type Service interface {
   RecipeAddView(uuid string) (error) 
   GetRecipesByUser(username string) ([]modals.Recipe, error) 
   ChangeRecipeName(uuid string, newName string) (error) 
+  NumberOfRecipes() (int, error) 
+  GetAllRecipe() ([]modals.Recipe, error) 
 
   // Session
   AddSession(session *modals.Session) (error)
   GetSession(sessionId string) (*modals.Session, error) 
   DeleteSession(sessionId string) (error) 
+
+  //Admin Session
+  AddAdminSession(session *modals.AdminSession) (error) 
+  GetAdminSession(sessionId string) (*modals.AdminSession, error) 
+  DeleteAdminSession(sessionId string) error 
 }
 
 type service struct {

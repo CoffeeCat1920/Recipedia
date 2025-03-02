@@ -21,6 +21,7 @@ func (s *Server) RegisterRouts() http.Handler {
   r.HandleFunc("/view/signup", web.Render("signup", nil))
   r.HandleFunc("/view/login", web.Render("login", nil))
   r.HandleFunc("/view/mostViewed", web.MostViewHandler)
+  r.HandleFunc("/view/admin-login", web.Render("admin-login", nil))
 
   // Recipes
   r.HandleFunc("/view/recipe/{id}", web.RecipeHandler)
@@ -40,6 +41,13 @@ func (s *Server) RegisterRouts() http.Handler {
   r.HandleFunc("/api/log-out",  api.Auth( api.LogOut ))
   r.HandleFunc("/api/edit-recipe/{uuid}",  api.Auth( api.EditRecipe ))
   r.HandleFunc("/api/delete/{uuid}",  api.Auth( api.DeleteRecipe )) 
+
+  // Admin Api
+  r.HandleFunc("/api/verify-admin",  api.VerifyAdmin)
+
+  // Admin views
+  r.HandleFunc("/view/admin-dashboard", api.AdminAuth( web.AdminDashboardHandler ) )
+  r.HandleFunc("/view/admin-manage-recipes", api.AdminAuth( web.AdminManageRecipes ) )
 
   //Css
   r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.Dir("web/assets"))))

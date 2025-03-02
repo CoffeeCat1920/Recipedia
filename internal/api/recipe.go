@@ -249,6 +249,8 @@ func DeleteRecipe(w http.ResponseWriter, r *http.Request) {
   vars := mux.Vars(r)
   recipeUUID := vars["uuid"] 
 
+	directoryPath := "web/recipes/" + recipeUUID
+
   if !(authSameUser(r)) {
 		fmt.Println("Doesn't have the permission to edit recipe")
 		http.Error(w, "Doesn't have the permission to edit recipe", http.StatusInternalServerError)
@@ -261,6 +263,8 @@ func DeleteRecipe(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
+
+  err = os.RemoveAll(directoryPath)
 
   http.Redirect(w, r, "/view/dashboard", http.StatusFound)
 }
