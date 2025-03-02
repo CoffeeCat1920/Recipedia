@@ -11,7 +11,7 @@
     <button class="option-button" onclick="window.location.href=`/view/edit/{{ .UUID }}`" type="button">
       Edit
     </button>
-    <button class="delete-button" hx-get="/api/delete/{{ .UUID }}" type="button">
+    <button class="delete-button" onclick="window.location.href=`/api/delete/{{ .UUID }}`;" type="button">
       Delete
     </button>
   </div>

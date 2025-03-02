@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Monomakh&family=Roboto:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Monomakh&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 @media (prefers-color-scheme: light) {
   :root {
@@ -130,7 +130,7 @@ body {
   border-radius: 0 0  240px  100%/240px;
 }
 
-h1, h2 {
+h1, h2, h3, h4, h5, h6 {
   font-family: "Monomakh", serif;
   text-align: center;
 }
@@ -169,7 +169,7 @@ h2 {
 }
 
 .nav-list {
-    list-style-type: none;
+  list-style-type: none;
   margin: 0;
   padding: 0;
 }
@@ -238,7 +238,6 @@ h2 {
   margin-right: 100px;
 }
 
-
 .recipe-card {
   height: 200px;
   width: 200px;
@@ -286,4 +285,88 @@ h2 {
   font-size: 16px;
   border: none;
   cursor: pointer;
+}
+
+.option-button:hover {
+  background-color: var(--primary-light);
+}
+
+.delete-button{
+  background-color: var(--red);
+  color: var(--background);
+  align-items: flex-end;
+  padding: 5px 10px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background-color: var(--red-dim);
+}
+
+.form-group {
+  display: flex;
+  justify-content: center;
+  align-items: left;
+  /* height: 100vh; */
+}
+
+form {
+  text-align: center;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+form input {
+  width: 300px;
+  padding: 10px 15px;
+  font-size: 16px;
+  border: 2px solid var(--background-light);
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  background-color: var(--background-light);
+  color: var(--text);
+}
+
+form input:focus {
+  border-color: var(--primary); 
+}
+
+form textarea {
+  width: 500px;
+  height: 300px;
+  padding: 10px;
+  font-family: "Roboto Mono";
+  font-size: 16px;
+  border: 2px solid var(--background-light);
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  background-color: var(--background-light);
+  color: var(--text);
+}
+
+form textarea:focus {
+  border-color: var(--primary); 
+}
+
+form button {
+  background-color: var(--primary);
+  color: var(--background);
+  align-items: flex-end;
+  padding: 5px 10px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: var(--primary-light);
+}
+
+form label {
+  display: block;  
+  font-family: "Monomakh", serif;
+  font-weight: bold; 
 }

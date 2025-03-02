@@ -147,6 +147,39 @@ func AddRecipe(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, url, http.StatusFound)
 }
 
+func authSameUser(r *http.Request) (bool) {
+  // Getting the recipe
+  vars := mux.Vars(r)
+  recipeUUID := vars["uuid"] 
+  recipe, err := database.New().GetRecipe(recipeUUID)
+	if err != nil {                                                                                                                                                                                       
+		fmt.Println("Can't find Recipe To Edit")
+		return false
+	}
+ 
+	// Get session token
+	c, err := r.Cookie("session-token")
+	if err != nil {
+		fmt.Println("Can't find Cookie")
+		return false
+	}
+
+	// Get user session
+	session, err := database.New().GetSession(c.Value)
+	if err != nil {
+		fmt.Printf("Can't find Session %s\n", c.Value)
+		return false
+	}
+  
+  // Verify the permission 
+  if !(recipe.OwnerId == session.OwnerId) {
+		fmt.Printf("You don't have ther permission to edit the recipe\n")
+		return false
+  }
+
+  return true
+}
+
 func EditRecipe(w http.ResponseWriter, r *http.Request) {
   // Getting the form Inputs
 	r.ParseForm()
@@ -162,27 +195,10 @@ func EditRecipe(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
- 
-	// Get session token
-	c, err := r.Cookie("session-token")
-	if err != nil {
-		fmt.Println("Can't find Cookie")
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
 
-	// Get user session
-	session, err := database.New().GetSession(c.Value)
-	if err != nil {
-		fmt.Printf("Can't find Session %s\n", c.Value)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
-  
-  // Verify the permission 
-  if !(recipe.OwnerId == session.OwnerId) {
-		fmt.Printf("You don't have ther permission to edit the recipe\n")
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+  if !(authSameUser(r)) {
+		fmt.Println("Doesn't have the permission to edit recipe")
+		http.Error(w, "Doesn't have the permission to edit recipe", http.StatusInternalServerError)
 		return
   }
 
@@ -228,3 +244,23 @@ func EditRecipe(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, url, http.StatusFound)
 } 
+
+func DeleteRecipe(w http.ResponseWriter, r *http.Request) {
+  vars := mux.Vars(r)
+  recipeUUID := vars["uuid"] 
+
+  if !(authSameUser(r)) {
+		fmt.Println("Doesn't have the permission to edit recipe")
+		http.Error(w, "Doesn't have the permission to edit recipe", http.StatusInternalServerError)
+		return
+  }
+
+  err := database.New().DeleteRecipe(recipeUUID) 
+	if err != nil {
+		fmt.Printf("Can't find Recipe To Edit cause, %s", err.Error())
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+  http.Redirect(w, r, "/view/dashboard", http.StatusFound)
+}

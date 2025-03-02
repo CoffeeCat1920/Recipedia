@@ -19,7 +19,9 @@ func (s* service) AddRecipe(recipe *modals.Recipe) (error)  {
 
 
 func (s *service) DeleteRecipe(uuid string) error {
-  _, err := s.db.Query("DELETE * FROM recipe WHERE uuid = %s", uuid) 
+  q := "DELETE FROM recipes WHERE uuid = $1" 
+
+  _, err := s.db.Query(q, uuid) 
 
   if err != nil {
     return  err
