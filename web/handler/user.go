@@ -1,6 +1,7 @@
 package web
 
 import (
+	"fmt"
 	"net/http"
 	"shiro/internal/api"
 	"shiro/internal/database"
@@ -9,30 +10,25 @@ import (
 )
 
 func DashBoardsHandler(w http.ResponseWriter, r *http.Request) {
-  user, err := api.LoggedUserName(r)
+  user, err := api.LogedUser(r)
   if err != nil {
+    fmt.Printf("\nCan't get the requested user cause, %s\n", err.Error())
     http.Error(w, "Can't get the requested user", http.StatusNotFound)
     return
   }
 
-  userUUID, err := database.New().GetUserUUid(user)
+  recipes, err := database.New().GetRecipesByUser(user.UUID)
   if err != nil {
-    http.Error(w, "Can't get the requested user", http.StatusNotFound)
-    return
+    fmt.Printf("\nCan't get the requested user's recipes cause, %s\n", err.Error())
   }
-
-  recipes, err := database.New().GetRecipesByUser(userUUID)
-  if err != nil {
-    http.Error(w, "Can't get the requested user", http.StatusNotFound)
-    return
-  }
-
 
   data := struct {
     Recipes []modals.Recipe  
   }{
     Recipes: recipes,
   }
+
+  fmt.Print(recipes)
 
   view.RenderView(w, r, "dashboard", "base", data)
 }

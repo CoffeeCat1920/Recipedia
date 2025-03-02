@@ -25,7 +25,7 @@ func init() {
   views["test"] = template.Must(template.ParseFiles("web/templ/topbar.html", "web/recipes/friedRice/recipe.html", "web/view/base.html"))
   views["upload-recipe"] = template.Must(template.ParseFiles("web/templ/topbar.html", "web/view/upload-recipe.html", "web/view/base.html"))
   views["dashboard"] = template.Must(template.ParseFiles("web/templ/topbar.html", "web/templ/userCard.html", "web/view/dashboard.html", "web/view/base.html"))
-
+  views["edit-recipe"] = template.Must(template.ParseFiles("web/templ/topbar.html", "web/view/edit-recipe.html", "web/view/base.html"))
   views["mostViewed"] = template.Must(template.ParseFiles("web/templ/topbar.html", "web/templ/cards.html", "web/view/mostViewed.html", "web/view/base.html"))
 }
 

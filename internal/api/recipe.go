@@ -9,11 +9,66 @@ import (
 	"shiro/internal/modals"
 
 	"github.com/gomarkdown/markdown"
+	"github.com/gorilla/mux"
 )
 
 func fileExists(path string) bool {
 	_, err := os.Stat(path)
 	return !os.IsNotExist(err)
+}
+
+func mdFileGenreator(content string, uuid string) (error) {
+  
+	directoryPath := "web/recipes/" + uuid 
+	if !fileExists(directoryPath) {
+		fmt.Println("Recipe Directory Doesn't Exists")
+    return fmt.Errorf("Recipe Directory Doesn't Exists, %s", directoryPath) 
+	}
+
+  mdPath := directoryPath + "/recipe.md"
+	mdFile, err := os.Create(mdPath)
+	if err != nil {
+		fmt.Printf("Error creating markdown file: %s\n", err.Error())
+		return err
+	}
+	defer mdFile.Close()
+
+	_, err = mdFile.WriteString(content)
+	if err != nil {
+		fmt.Printf("Error writing to markdown file: %s\n", err.Error())
+		return err
+	}
+
+  return nil
+} 
+
+func htmlFileGenerator(recipeName string, content string, uuid string) (error) {
+	directoryPath := "web/recipes/" + uuid 
+	if !fileExists(directoryPath) {
+		fmt.Println("Recipe Directory Doesn't Exists")
+    return fmt.Errorf("Recipe Directory Doesn't Exists, %s", directoryPath) 
+	}
+
+  htmlFile := directoryPath + "/recipe.html"
+
+  htmlContent := markdown.ToHTML([]byte(content), nil, nil)
+  
+  templateContent := fmt.Sprintf(`{{ define "head" }}
+  <title> %s </title>
+  {{ end }}
+  {{ define "body" }}
+  ` + string(htmlContent) + `
+  {{ end }}`, recipeName)
+
+
+  if !fileExists(htmlFile) {
+    err := os.WriteFile(htmlFile, []byte(templateContent), fs.ModePerm)
+    if err != nil {
+      panic(err)
+    }
+  }
+  
+  return nil
 }
 
 func AddRecipe(w http.ResponseWriter, r *http.Request) {
@@ -69,50 +124,18 @@ func AddRecipe(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Create the Markdown file
-	mdPath := directoryPath + "/recipe.md"
-	if fileExists(mdPath) {
-		fmt.Println("Recipe Markdown file already exists")
-		http.Error(w, "Recipe Markdown file already exists", http.StatusInternalServerError)
-		return
-	}
-
-	mdFile, err := os.Create(mdPath)
+  err = mdFileGenreator(content, recipe.UUID)
 	if err != nil {
-		fmt.Printf("Error creating markdown file: %s\n", err.Error())
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
-	defer mdFile.Close()
-
-	// Write content to file
-	_, err = mdFile.WriteString(content)
-	if err != nil {
-		fmt.Printf("Error writing to markdown file: %s\n", err.Error())
-		http.Error(w, "Can't write to markdown file", http.StatusInternalServerError)
 		return
 	}
 
   // Creating an html file
-
-
-  htmlContent := markdown.ToHTML([]byte(content), nil, nil)
-  
-  templateContent := fmt.Sprintf(`{{ define "head" }}
-  <title> %s </title>
-  {{ end }}
-  {{ define "body" }}
-  ` + string(htmlContent) + `
-  {{ end }}`, recipe.Name)
-  
-
-  htmlFile := directoryPath + "/recipe.html"  
-  if !fileExists(htmlFile) {
-    err = os.WriteFile(htmlFile, []byte(templateContent), fs.ModePerm)
-    if err != nil {
-      panic(err)
-    }
-  }
+  err = htmlFileGenerator(recipe.Name, content, recipe.UUID)
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
 
 	// Success message
 	fmt.Printf("Added recipe: %s, UUID: %s, by user: %s\n", recipe.Name, recipe.UUID, user.Name)
@@ -123,3 +146,85 @@ func AddRecipe(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, url, http.StatusFound)
 }
+
+func EditRecipe(w http.ResponseWriter, r *http.Request) {
+  // Getting the form Inputs
+	r.ParseForm()
+	name := r.PostFormValue("name")
+	content := r.PostFormValue("content")
+   
+  // Getting the recipe
+  vars := mux.Vars(r)
+  recipeUUID := vars["uuid"] 
+  recipe, err := database.New().GetRecipe(recipeUUID)
+	if err != nil {
+		fmt.Println("Can't find Recipe To Edit")
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+ 
+	// Get session token
+	c, err := r.Cookie("session-token")
+	if err != nil {
+		fmt.Println("Can't find Cookie")
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	// Get user session
+	session, err := database.New().GetSession(c.Value)
+	if err != nil {
+		fmt.Printf("Can't find Session %s\n", c.Value)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+  
+  // Verify the permission 
+  if !(recipe.OwnerId == session.OwnerId) {
+		fmt.Printf("You don't have ther permission to edit the recipe\n")
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+  }
+
+  // Editing the old files
+	directoryPath := "web/recipes/" + recipe.UUID
+	if !fileExists(directoryPath) {
+		fmt.Println("Recipe Directory Doesn't Exists")
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+  
+  // Editing md file
+	mdPath := directoryPath + "/recipe.md"
+	if !fileExists(mdPath) {
+		fmt.Println("Recipe Markdown file already exists")
+		http.Error(w, "Recipe Markdown file already exists", http.StatusInternalServerError)
+		return
+	}
+  os.Remove(mdPath)
+
+  err = mdFileGenreator(content, recipe.UUID)
+  if err != nil {
+    http.Error(w, "Can't generate new md", http.StatusInternalServerError)
+  }
+
+
+  htmlFile := directoryPath + "/recipe.html"  
+  if !fileExists(htmlFile) {
+		fmt.Println("Recipe Directory Doesn't Exists")
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+  }
+  os.Remove(htmlFile)
+
+  err = htmlFileGenerator(name, content, recipe.UUID)
+  if err != nil {
+    http.Error(w, "Can't generate new md", http.StatusInternalServerError)
+  }
+  err = database.New().ChangeRecipeName(recipe.UUID, name)
+
+	// Redirect user
+  url := "/view/recipe/" + recipe.UUID
+
+	http.Redirect(w, r, url, http.StatusFound)
+} 

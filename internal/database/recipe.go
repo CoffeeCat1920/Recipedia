@@ -17,21 +17,6 @@ func (s* service) AddRecipe(recipe *modals.Recipe) (error)  {
   return nil
 }
 
-func (s *service) GetRecipe(uuid string) (*modals.Recipe, error) {
-  var recipe modals.Recipe 
-  
-  row, err := s.db.Query("SELECT * FROM recipe WHERE uuid = %s", uuid) 
-  if err != nil {
-    return nil, err
-  }
-
-  err = row.Scan(&recipe.UUID, &recipe.Name, &recipe.OwnerId, 0)
-  if err != nil {
-    return nil, err
-  }
-
-  return &recipe, nil
-}
 
 func (s *service) DeleteRecipe(uuid string) error {
   _, err := s.db.Query("DELETE * FROM recipe WHERE uuid = %s", uuid) 
@@ -108,20 +93,19 @@ func (s *service) RecipeAddView(uuid string) error {
   return nil
 }
 
-func (s *service) GetRecipesByUser(username string) ([]modals.Recipe, error) {
+func (s *service) GetRecipesByUser(uuid string) ([]modals.Recipe, error) {
   var recipes []modals.Recipe
 
-  user, err := s.GetUserByName(username) 
+  q := "SELECT * FROM recipes WHERE ownerid = $1" 
+  rows, err := s.db.Query(q, uuid)
+
   if err != nil {
     return nil, err
   }
-  
-  q := "SELECT * FROM recipes WHERE ownerid = $1" 
-  rows, err := s.db.Query(q, user.UUID)
 
   for rows.Next() {
     var recipe modals.Recipe 
-    err := rows.Scan(&recipe.UUID, recipe.Name, recipe.OwnerId, recipe.Views)
+    err := rows.Scan(&recipe.UUID, &recipe.Name, &recipe.OwnerId, &recipe.Views)
 
     if err != nil {
       return nil, err
@@ -131,4 +115,28 @@ func (s *service) GetRecipesByUser(username string) ([]modals.Recipe, error) {
   }
 
   return recipes, nil
+}
+
+func (s *service) GetRecipe(uuid string) (*modals.Recipe, error) {
+  var recipe modals.Recipe 
+   
+  q := "SELECT * FROM recipes WHERE uuid = $1" 
+  row := s.db.QueryRow(q, uuid)
+
+  err := row.Scan(&recipe.UUID, &recipe.Name, &recipe.OwnerId, &recipe.Views)
+  if err != nil {
+    return nil, err
+  }
+
+  return &recipe, nil
+}
+
+func (s *service) ChangeRecipeName(uuid string, newName string) (error) {
+  q := "UPDATE recipes SET name = $1 WHERE uuid = $2"
+  _, err := s.db.Exec(q, newName, uuid)
+  if err != nil {
+    return err
+  }
+
+  return nil
 }

@@ -1,14 +1,19 @@
+<!-- The Cards to be used in the user's dashboard -->
+
 {{ define "userCards" }}
 
 <div class="recipe-container">
 
-  {{ range .ViewModel}}
-  <div>
-    <a class="recipe-card" href="/view/recipe/{{ .UUID }}"> 
-      <h3 class="recipe-name">{{ .Name }}</h3>
-      <p class="recipe-views">Views: {{ .Views }}</p>
-      <button type="button">Edit</button>
-    </a>
+  {{ range .ViewModel.Recipes }}
+  <div class="recipe-card">
+    <h3 class="recipe-name">{{ .Name }}</h3>
+    <p class="recipe-views">Views: {{ .Views }}</p>
+    <button class="option-button" onclick="window.location.href=`/view/edit/{{ .UUID }}`" type="button">
+      Edit
+    </button>
+    <button class="delete-button" hx-get="/api/delete/{{ .UUID }}" type="button">
+      Delete
+    </button>
   </div>
   {{ end }}
 

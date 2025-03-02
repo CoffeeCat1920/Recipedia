@@ -1,0 +1,220 @@
+{{ define "head" }}
+  <title> test </title>
+  {{ end }}
+  {{ define "body" }}
+  <h1>Markdown Test File</h1>
+
+<h2>Headings Demo</h2>
+
+<h1>Heading 1</h1>
+
+<h2>Heading 2</h2>
+
+<h3>Heading 3</h3>
+
+<h4>Heading 4</h4>
+
+<h5>Heading 5</h5>
+
+<h6>Heading 6</h6>
+
+<h2>Text Formatting</h2>
+
+<p>Regular text looks like this.</p>
+
+<p><strong>Bold text</strong> looks like this.</p>
+
+<p><em>Italic text</em> looks like this.</p>
+
+<p><strong><em>Bold and italic text</em></strong> looks like this.</p>
+
+<p><del>Strikethrough text</del> looks like this.</p>
+
+<p><code>Inline code</code> looks like this.</p>
+
+<blockquote>
+<p>Blockquotes look like this.</p>
+
+<p>They can span multiple lines.</p>
+</blockquote>
+
+<h2>Lists</h2>
+
+<h3>Unordered List</h3>
+
+<ul>
+<li>Item 1</li>
+<li>Item 2
+
+<ul>
+<li>Nested item 2.1</li>
+<li>Nested item 2.2</li>
+</ul></li>
+<li>Item 3</li>
+</ul>
+
+<h3>Ordered List</h3>
+
+<ol>
+<li>First item</li>
+<li>Second item
+
+<ol>
+<li>Nested item 2.1</li>
+<li>Nested item 2.2</li>
+</ol></li>
+<li>Third item</li>
+</ol>
+
+<h3>Task List</h3>
+
+<ul>
+<li>[x] Completed task</li>
+<li>[ ] Incomplete task</li>
+<li>[ ] Another task</li>
+</ul>
+
+<h2>Tables</h2>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Age</th>
+<th>Occupation</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>John</td>
+<td>32</td>
+<td>Developer</td>
+</tr>
+
+<tr>
+<td>Jane</td>
+<td>28</td>
+<td>Designer</td>
+</tr>
+
+<tr>
+<td>Bob</td>
+<td>45</td>
+<td>Manager</td>
+</tr>
+</tbody>
+</table>
+
+<h3>Table With Alignment</h3>
+
+<table>
+<thead>
+<tr>
+<th align="left">Left-aligned</th>
+<th align="center">Center-aligned</th>
+<th align="right">Right-aligned</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">Content</td>
+<td align="center">Content</td>
+<td align="right">Content</td>
+</tr>
+
+<tr>
+<td align="left">Left</td>
+<td align="center">Center</td>
+<td align="right">Right</td>
+</tr>
+</tbody>
+</table>
+
+<h2>Code Blocks</h2>
+
+<pre><code class="language-python">def hello_world():
+    print(&quot;Hello, world!&quot;)
+
+hello_world()
+</code></pre>
+
+<pre><code class="language-javascript">function sayHello() {
+  console.log(&quot;Hello, world!&quot;);
+}
+
+sayHello();
+</code></pre>
+
+<h2>Links</h2>
+
+<p><a href="https://github.com">Visit GitHub</a></p>
+
+<hr>
+
+<h2>Advanced Elements</h2>
+
+<h3>Definition List</h3>
+
+<dl>
+<dt>Term 1</dt>
+<dd>Definition 1</dd>
+<dt>Term 2</dt>
+<dd>Definition 2</dd>
+</dl>
+
+<h3>Footnotes</h3>
+
+<p>Here&rsquo;s a sentence with a footnote[^1].</p>
+
+<p>[^1]: This is the footnote.</p>
+
+<h2>Nested Elements</h2>
+
+<blockquote>
+<p>This is a blockquote containing a list</p>
+
+<ul>
+<li>Item 1</li>
+<li>Item 2</li>
+</ul>
+
+<p>And a table</p>
+
+<table>
+<thead>
+<tr>
+<th>Column 1</th>
+<th>Column 2</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Value 1</td>
+<td>Value 2</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+
+<h2>Escape Characters</h2>
+
+<p>* This is not italic *</p>
+
+<p>\ Backslash</p>
+
+<p>` Backtick</p>
+
+<h2>HTML in Markdown</h2>
+
+<p><details>
+  <summary>Click to expand</summary></p>
+
+<p>This content appears when expanded.</p>
+
+<p>It can include <em>formatted</em> text and other <strong>markdown</strong> elements.
+</details></p>
+
+  {{ end }}

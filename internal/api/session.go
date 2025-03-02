@@ -129,26 +129,19 @@ func LogOut(w http.ResponseWriter, r *http.Request) {
   return 
 }
 
-func logedUser(r *http.Request) (*modals.User, error) {
+func LogedUser(r *http.Request) (*modals.User, error) {
   session, err := auth(r) 
   if err != nil {
     return nil, err
   }
 
   user, err := database.New().GetUserByUUid(session.OwnerId)
+  fmt.Printf("\nThe sessions' uuid is the following, %s\n", session.OwnerId)
   if err != nil {
     return nil, err
   }
 
   return user, nil
-}
-
-func LoggedUserName(r *http.Request) (string, error) {
-  user, err := logedUser(r) 
-  if err != nil {
-    return "", nil
-  }
-  return user.Name, nil
 }
 
 func Auth( next http.HandlerFunc ) http.HandlerFunc {

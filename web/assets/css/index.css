@@ -1,50 +1,52 @@
 @import url('https://fonts.googleapis.com/css2?family=Monomakh&family=Roboto:wght@100..900&display=swap');
 
-:root {
+@media (prefers-color-scheme: light) {
+  :root {
 
-  --bg_h: #f9f5d7;
-  --bg:   #fbf1c7;
-  --bg_s: #f2e5bc;
-  --bg1:  #ebdbb2;
-  --bg2:  #d5c4a1;
-  --bg3:  #bdae93;
-  --bg4:  #a89984;
+    --bg_h: #f9f5d7;
+    --bg:   #fbf1c7;
+    --bg_s: #f2e5bc;
+    --bg1:  #ebdbb2;
+    --bg2:  #d5c4a1;
+    --bg3:  #bdae93;
+    --bg4:  #a89984;
 
-  --fg:  #282828;
-  --fg1: #3c3836;
-  --fg2: #504945;
-  --fg3: #665c54;
-  --fg4: #7c6f64;
+    --fg:  #282828;
+    --fg1: #3c3836;
+    --fg2: #504945;
+    --fg3: #665c54;
+    --fg4: #7c6f64;
 
-  --red:    #9d0006;
-  --green:  #79740e;
-  --yellow: #b57614;
-  --blue:   #076678;
-  --purple: #8f3f71;
-  --aqua:   #427b58;
-  --orange: #af3a03;
-  --gray:   #928374;
+    --red:    #9d0006;
+    --green:  #79740e;
+    --yellow: #b57614;
+    --blue:   #076678;
+    --purple: #8f3f71;
+    --aqua:   #427b58;
+    --orange: #af3a03;
+    --gray:   #928374;
 
-  --red-dim:    #cc2412;
-  --green-dim:  #98971a;
-  --yellow-dim: #d79921;
-  --blue-dim:   #458598;
-  --purple-dim: #b16286;
-  --aqua-dim:   #689d6a;
-  --orange-dim: #d65d0e;
-  --gray-dim:   #7c6f64;
+    --red-dim:    #cc2412;
+    --green-dim:  #98971a;
+    --yellow-dim: #d79921;
+    --blue-dim:   #458598;
+    --purple-dim: #b16286;
+    --aqua-dim:   #689d6a;
+    --orange-dim: #d65d0e;
+    --gray-dim:   #7c6f64;
 
-  --background: var(--bg_h);
-  --text: var(--fg);
-  --primary: var(--aqua);
+    --background: var(--bg_h);
+    --header-background: var(--bg_s);
+    --text: var(--fg);
+    --primary: var(--aqua);
 
-  --background-light: var(--bg);
-  --text-light: var(--fg0);
-  --primary-light: var(--aqua-dim);
+    --background-light: var(--bg);
+    --text-light: var(--fg0);
+    --primary-light: var(--aqua-dim);
+  }
 }
 
 @media (prefers-color-scheme: dark) {
-
   :root {
     --bg_h: #1d2021;
     --bg:   #282828;
@@ -79,13 +81,13 @@
     --orange-dim: #d65d0e;
 
     --background: var(--bg_h);
+    --header-background: var(--bg3);
     --text: var(--fg);
     --primary: var(--aqua);
 
     --background-light: var(--bg);
     --text-light: var(--fg0);
     --primary-light: var(--aqua-dim);
-
   }
 } 
 
@@ -124,8 +126,8 @@ body {
 
 .header {
   padding: 20px;
-  background-color: var(--bg3);
-  border-radius: 0 0 240px 50%/60px;
+  background-color: var(--header-background);
+  border-radius: 0 0  240px  100%/240px;
 }
 
 h1, h2 {
@@ -142,16 +144,6 @@ h2 {
   font-weight: normal;
   padding: 20px;
 }
-
-.search-bar {
-  display: flex;
-}
-
-.search-bar input {
-  width: 200px;
-}
-
-/* Navbar Styling */
 
 .navbar {
   display: flex;
@@ -170,13 +162,14 @@ h2 {
   color: var(--blue0);
 }
 
+
 .nav-links {
   display: flex;
   align-items: auto;
 }
 
 .nav-list {
-  list-style-type: none;
+    list-style-type: none;
   margin: 0;
   padding: 0;
 }
@@ -196,12 +189,11 @@ h2 {
   color: var(--primary);
 }
 
-
 .search-bar {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px; /* Space between input and button */
+  gap: 10px;
   margin-top: 15px;
 }
 
@@ -262,6 +254,7 @@ h2 {
 
 .recipe-card:hover {
   transform: scale(1.05);
+  shadow: 10px;
 }
 
 .recipe-name {
@@ -274,7 +267,7 @@ h2 {
   font-size: 12px;
   margin-top: 5px;
   margin-bottom: 0px;
-  text-align: left;
+  text-align: center;
 }
 
 .recipe-card h3 {
@@ -283,4 +276,14 @@ h2 {
 
 .recipe-card p {
   margin: 20px 20px; /* Adjust the value as needed */
+}
+
+.option-button {
+  background-color: var(--primary);
+  color: var(--background);
+  align-items: flex-end;
+  padding: 5px 10px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
 }

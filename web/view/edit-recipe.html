@@ -1,0 +1,37 @@
+<!-- The page to edit the recipes -->
+
+{{ define "head" }}
+<title>Edit Recipe</title>
+{{ end }}
+
+{{ define "body" }}
+
+<h1> Edit {{ .ViewModel.RecipeName }} </h1>
+
+<form action="/api/edit-recipe/{{ .ViewModel.UUID }}" method="post">
+
+  <div>
+    <p>
+      <label for="Name">Name</label>
+      <br>
+      <input type="text" name="name" value="{{ .ViewModel.RecipeName }}"> 
+    </p>
+  </div>
+  
+  <div>
+    <p>
+      <label for="Content">Write here</label>
+      <br>
+      <textarea type="text" name="content" rows="10" cols="10">{{ .ViewModel.RecipeContent }}</textarea>
+    </p>
+  </div>
+   
+  <div>
+    <p>
+      <button type="submit">Submit</button>
+    </p>
+  </div>
+  
+</form>
+
+{{ end }}

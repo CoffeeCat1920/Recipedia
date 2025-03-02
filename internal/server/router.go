@@ -25,10 +25,11 @@ func (s *Server) RegisterRouts() http.Handler {
   // Recipes
   r.HandleFunc("/view/recipe/{id}", web.RecipeHandler)
   r.HandleFunc("/view/search", web.SearchRecipes)
+  r.HandleFunc("/view/edit/{uuid}", web.EditRecipeHandler)
 
   // Secure Views
   r.HandleFunc("/view/upload-recipe", api.Auth( web.Render("upload-recipe", nil) ))
-  r.HandleFunc("/view/dashboard", api.Auth( web.Render("dashboard", nil) ))  
+  r.HandleFunc("/view/dashboard", api.Auth(web.DashBoardsHandler))  
 
   // Api
   r.HandleFunc("/api/add-user", api.AddUser).Methods("POST")
@@ -37,6 +38,7 @@ func (s *Server) RegisterRouts() http.Handler {
   // Secure Api
   r.HandleFunc("/api/add-recipe",  api.Auth( api.AddRecipe )).Methods("POST")
   r.HandleFunc("/api/log-out",  api.Auth( api.LogOut ))
+  r.HandleFunc("/api/edit-recipe/{uuid}",  api.Auth( api.EditRecipe ))
 
   //Css
   r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.Dir("web/assets"))))

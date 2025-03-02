@@ -3,9 +3,12 @@ package web
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"shiro/internal/database"
 	"shiro/internal/modals"
 	"shiro/web/view"
+
+	"github.com/gorilla/mux"
 )
 
 func MostViewHandler(w http.ResponseWriter, r *http.Request) {
@@ -45,4 +48,38 @@ func SearchRecipes(w http.ResponseWriter, r *http.Request) {
 
 func RecipeHandler(w http.ResponseWriter, r *http.Request) {
   view.RecipeHandler(w, r)
+}
+
+func EditRecipeHandler(w http.ResponseWriter, r *http.Request) {
+  vars := mux.Vars(r)
+  uuid := vars["uuid"]
+  
+  recipe, err := database.New().GetRecipe(uuid)
+  if err != nil {
+    http.Error(w, "No recipe found to edit", http.StatusInternalServerError)
+    fmt.Printf("Can't get the recipe to edit, %s", err.Error())
+    return
+  }
+  
+  path := "web/recipes/" + recipe.UUID 
+  mdContent, err := os.ReadFile(path + "/recipe.md")  
+  if err != nil {
+    http.Error(w, "No recipe found to edit", http.StatusInternalServerError)
+    fmt.Printf("Can't find the recipe.md to edit, %s", err.Error())
+    return
+  }
+
+  data := struct {
+    RecipeName string
+    RecipeContent string
+    UUID string
+  }{
+    RecipeName: recipe.Name,
+    RecipeContent: string(mdContent),
+    UUID: recipe.UUID,
+  }
+
+  fmt.Printf("\nThe Content of the recipe\n%s", string(mdContent))
+
+  view.RenderView(w, r, "edit-recipe", "base", data) 
 }
