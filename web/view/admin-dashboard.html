@@ -1,0 +1,26 @@
+{{ define "head" }}
+
+<title> Dashboard </title>
+
+{{ end }}
+
+{{ define "body" }}
+
+<h1>Hello Sir Mr Admin</h1>
+<h2>Dashboard</h2>
+
+<div class="info-container">
+
+  <div class="info-card">
+    <h3 class="info-name">Number of Users</h3>
+    <p class="info">{{ .ViewModel.NOU }}</p>
+  </div>
+
+  <div class="info-card">
+    <h3 class="info-name">Number of Recipes</h3>
+    <p class="info">{{ .ViewModel.NOR }}</p>
+  </div>
+
+</div>
+
+{{ end }}

@@ -27,6 +27,12 @@ func init() {
   views["dashboard"] = template.Must(template.ParseFiles("web/templ/topbar.html", "web/templ/userCard.html", "web/view/dashboard.html", "web/view/base.html"))
   views["edit-recipe"] = template.Must(template.ParseFiles("web/templ/topbar.html", "web/view/edit-recipe.html", "web/view/base.html"))
   views["mostViewed"] = template.Must(template.ParseFiles("web/templ/topbar.html", "web/templ/cards.html", "web/view/mostViewed.html", "web/view/base.html"))
+
+  views["admin-login"] = template.Must(template.ParseFiles("web/templ/simple-topbar.html", "web/view/admin-login.html", "web/view/base.html"))
+  views["admin-dashboard"] = template.Must(template.ParseFiles("web/templ/admin-topbar.html", "web/view/admin-dashboard.html", "web/view/base.html"))
+  views["admin-manage-recipes"] = template.Must(template.ParseFiles("web/templ/admin-topbar.html", "web/templ/admin-userCard.html", "web/view/admin-manage-recipes.html", "web/view/base.html"))
+  views["admin-edit-recipe"] = template.Must(template.ParseFiles("web/templ/admin-topbar.html", "web/view/admin-edit.html", "web/view/base.html"))
+  views["admin-manage-users"] = template.Must(template.ParseFiles("web/templ/admin-topbar.html", "web/templ/admin-manage-userCard.html", "web/view/admin-manage-user.html", "web/view/base.html"))
 }
 
 func getData(r *http.Request, viewModel interface{}) (interface{}, error) {

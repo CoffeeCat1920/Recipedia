@@ -1,0 +1,25 @@
+{{ define "head" }}
+
+<title>Admin login</title>
+
+{{ end }}
+
+{{ define "body" }}
+
+<h1>Admin Login</h1>
+
+<form action="/api/verify-admin" method="POST">
+
+  <p>
+    <label for="Admin Password">Password</label>
+    <br>
+    <input type="text" name="password"> 
+  </p>
+
+  <p>
+    <button type="submit">Submit</button>
+  </p>
+  
+</form>
+
+{{ end }}

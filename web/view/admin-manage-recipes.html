@@ -1,0 +1,16 @@
+{{ define "head" }}
+
+<title> Manage Recipes </title>
+
+{{ end }}
+
+{{ define "body" }}
+
+<h1>Hello Sir Mr Admin</h1>
+<h2>All Recipes</h2>
+
+<div class="recipes">
+  {{ template "userCards" . }}
+</div>
+
+{{ end }}
