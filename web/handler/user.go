@@ -28,7 +28,5 @@ func DashBoardsHandler(w http.ResponseWriter, r *http.Request) {
     Recipes: recipes,
   }
 
-  fmt.Print(recipes)
-
   view.RenderView(w, r, "dashboard", "base", data)
 }

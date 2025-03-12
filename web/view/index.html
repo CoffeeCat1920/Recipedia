@@ -6,22 +6,28 @@
 
 {{ define "body" }}
 
-<div class="header">
+<div class="container-fluid  pb-5 pt-5 text-center bg-light-subtle">
 
-  <h1 class="logo">•ᴗ• Recepidia</h1>
+  <h1>•ᴗ• Recepidia</h1>
   <h2>What to have today?</h2>
 
-  <form class="search-bar" action="/view/search" >
-    <input class="search-input" name="search" type="text" placeholder="Search" aria-label="Search">
-    <button class="search-button">Search</button>
+  <form  action="/view/search" >
+    <input name="search" type="text" placeholder="Search" aria-label="Search">
+    <button type="button" class="btn btn-primary">Search</button>
   </form>
 
 </div>
 
-<h2>Most Viewed</h2>
-
-<div class="recipes">
-  {{ template "cards" . }}
+<div class="container text-center">
+  <div class="row">
+    <h2 class="col pt-5 pb-5">Most Viewed</h2>
+  </div>
+  <div class="row">
+    <div class="col">
+      {{ template "cards" . }}
+    </div>
+  </div>
 </div>
+
 
 {{ end }}

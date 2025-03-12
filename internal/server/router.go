@@ -44,10 +44,16 @@ func (s *Server) RegisterRouts() http.Handler {
 
   // Admin Api
   r.HandleFunc("/api/verify-admin",  api.VerifyAdmin)
+  r.HandleFunc("/api/admin-edit-recipe/{uuid}", api.AdminAuth( api.EditRecipeAdmin ) )
+  r.HandleFunc("/api/admin-delete-recipe/{uuid}", api.AdminAuth( api.AdminDeleteRecipe) )
+  r.HandleFunc("/api/admin-delete-user/{uuid}", api.AdminAuth( api.AdminDeleteUser) )
+  r.HandleFunc("/api/admin-logout", api.AdminAuth( api.AdminLogout) )
 
   // Admin views
   r.HandleFunc("/view/admin-dashboard", api.AdminAuth( web.AdminDashboardHandler ) )
-  r.HandleFunc("/view/admin-manage-recipes", api.AdminAuth( web.AdminManageRecipes ) )
+  r.HandleFunc("/view/admin-manage-recipe", api.AdminAuth( web.AdminManageRecipes ) )
+  r.HandleFunc("/view/admin-manage-user", api.AdminAuth( web.AdminManageUsers ) )
+  r.HandleFunc("/view/admin-edit/{uuid}", api.AdminAuth( web.AdminEditRecipeHandler) )
 
   //Css
   r.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.Dir("web/assets"))))

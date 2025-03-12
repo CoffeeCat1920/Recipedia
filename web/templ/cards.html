@@ -2,16 +2,18 @@
 
 {{ define "cards" }}
 
-<div class="recipe-container">
+<div class="container">
 
-  {{ range .ViewModel.Recipes}}
-  <div>
-    <a class="recipe-card" href="/view/recipe/{{ .UUID }}"> 
-      <h3 class="recipe-name">{{ .Name }}</h3>
-      <p class="recipe-views">Views: {{ .Views }}</p>
-    </a>
+  <div class="row">
+    {{ range .ViewModel.Recipes}}
+    <div class="col-md-4">
+      <a href="/view/recipe/{{ .UUID }}"> 
+        <h3 class="text-center">{{ .Name }}</h3>
+        <p class="text-center">Views: {{ .Views }}</p>
+      </a>
+    </div>
+    {{ end }}
   </div>
-  {{ end }}
 
 </div>
 

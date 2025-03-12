@@ -6,6 +6,7 @@ import (
 	"shiro/internal/admin.go"
 	"shiro/internal/database"
 	"shiro/internal/modals"
+	"time"
 )
 
 func VerifyAdmin(w http.ResponseWriter, r *http.Request) {
@@ -62,3 +63,32 @@ func AdminAuth(next http.HandlerFunc) (http.HandlerFunc) {
     next(w, r)
   }
 }
+
+func AdminLogout(w http.ResponseWriter, r *http.Request) {
+  session, err := authAdmin(r) 
+
+  if err != nil {
+    fmt.Printf("\nCan't Autherize session with id %s in db", session.SessionId)
+    http.Error(w, "Can't Logout", http.StatusInternalServerError)
+    return 
+  }
+
+  err = database.New().DeleteAdminSession(session.SessionId)
+  if err != nil {
+    fmt.Printf("\nCan't delete Admin Session %s in db cause,\n%s", session.SessionId, err.Error())
+    http.Error(w, "Can't Logout", http.StatusInternalServerError)
+    return 
+  }
+
+  http.SetCookie(w, &http.Cookie{
+    Name:     "admin-session-token",
+    Value:    "",
+    Expires:  time.Unix(0, 0), // Expire immediately
+    Path:     "/",
+    HttpOnly: true,
+    SameSite: http.SameSiteLaxMode,
+  })
+
+  http.Redirect(w, r, "/view/admin-login", 302)
+  return 
+} 

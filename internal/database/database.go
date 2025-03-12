@@ -17,6 +17,8 @@ type Service interface {
   GetUserByName(name string) (*modals.User, error) 
   GetUserUUid(name string) (string, error) 
   NumberOfUsers() (int, error) 
+  GetAllUsers() ([]modals.User, error) 
+  DeleteUser(uuid string) (error) 
   
   // Recipes
   AddRecipe(recipe *modals.Recipe) (error)  

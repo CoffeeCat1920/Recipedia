@@ -1,4 +1,4 @@
-# Classic Chocolate Chip Cookies
+# Chocolate Chip Cookies
 
 ## Description
 These homemade chocolate chip cookies are the perfect combination of soft and chewy in the middle with crispy edges. A timeless recipe that's great for testing your markdown renderer!

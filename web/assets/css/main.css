@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Monomakh&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* Light Theme */
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg-h: #f9f5d7;
+    --bg: #fbf1c7;
+    --bg-s: #f2e5bc;
+    --bg1: #ebdbb2;
+    --bg2: #d5c4a1;
+    --bg3: #bdae93;
+    --bg4: #a89984;
+
+    --fg: #282828;
+    --fg1: #3c3836;
+    --fg2: #504945;
+    --fg3: #665c54;
+    --fg4: #7c6f64;
+
+    --primary: #427b58;
+    --secondary: #928374;
+    --success: #79740e;
+    --danger: #9d0006;
+    --warning: #b57614;
+    --info: #076678;
+
+    /* Bootstrap Overrides */
+    --bs-body-bg: var(--bg);
+    --bs-body-color: var(--fg);
+    --bs-primary: var(--primary);
+    --bs-secondary: var(--secondary);
+    --bs-success: var(--success);
+    --bs-danger: var(--danger);
+    --bs-warning: var(--warning);
+    --bs-info: var(--info);
+  }
+}
+
+/* Dark Theme */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-h: #1d2021;
+    --bg: #282828;
+    --bg-s: #32302f;
+    --bg1: #3c3836;
+    --bg2: #504945;
+    --bg3: #665c54;
+    --bg4: #7c6f64;
+
+    --fg: #fbf1c7;
+    --fg1: #ebdbb2;
+    --fg2: #d5c4a1;
+    --fg3: #bdae93;
+    --fg4: #a89984;
+
+    --primary: #8ec07c;
+    --secondary: #a89984;
+    --success: #b8bb26;
+    --danger: #fb4934;
+    --warning: #fabd2f;
+    --info: #83a598;
+
+    /* Bootstrap Overrides */
+    --bs-body-bg: var(--bg);
+    --bs-body-color: var(--fg);
+    --bs-primary: var(--primary);
+    --bs-secondary: var(--secondary);
+    --bs-success: var(--success);
+    --bs-danger: var(--danger);
+    --bs-warning: var(--warning);
+    --bs-info: var(--info);
+  }
+}
+
+/* Global Styles */
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+  margin: 0;
+  padding: 0;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Monomakh", sans-serif;
+  color: var(--fg);
+}
+
+p, span, div {
+  font-family: "Roboto", sans-serif;
+}
+
+/* Navbar */
+.navbar {
+  background-color: var(--bg-s) !important;
+  color: var(--fg) !important;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark) !important;
+  border-color: var(--primary-dark) !important;
+}
+
+/* Cards */
+.card {
+  background-color: var(--bg1) !important;
+  color: var(--fg) !important;
+  border: 1px solid var(--bg3) !important;
+}
+
+.card-body {
+  background-color: var(--bg) !important;
+  color: var(--fg1) !important;
+}
+
+/* Forms */
+input[type="text"] {
+  background-color: var(--bg1);
+  color: var(--fg);
+  border: 1px solid var(--bg3);
+}
+
+input[type="text"]::placeholder {
+  color: var(--fg3);
+}
+
+/* Centering Content */
+.container.text-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Footer */
+footer {
+  background-color: var(--bg2);
+  color: var(--fg);
+  padding: 10px;
+  text-align: center;
+}

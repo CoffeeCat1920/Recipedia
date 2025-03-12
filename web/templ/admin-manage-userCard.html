@@ -1,0 +1,18 @@
+<!-- The Cards to be used in the user's dashboard -->
+
+{{ define "userCards" }}
+
+<div class="recipe-container">
+
+  {{ range .ViewModel.Users }}
+  <div class="recipe-card">
+    <h3 class="recipe-name">{{ .Name }}</h3>
+    <button class="delete-button" onclick="window.location.href=`/api/admin-delete-user/{{ .UUID }}`;" type="button">
+      Delete
+    </button>
+  </div>
+  {{ end }}
+
+</div>
+
+{{ end }}

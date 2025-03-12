@@ -17,6 +17,27 @@ func (s *service) AddUser(user *modals.User) (error) {
   return nil
 }
 
+func (s *service) DeleteUser(uuid string) error {
+  tx, err := s.db.Begin()
+  if err != nil {
+    return err
+  }
+  
+  _, err = tx.Exec("DELETE FROM recipes WHERE ownerid = $1", uuid)
+  if err != nil {
+    tx.Rollback()
+    return err
+  }
+  
+  _, err = tx.Exec("DELETE FROM users WHERE uuid = $1", uuid)
+  if err != nil {
+    tx.Rollback()
+    return err
+  }
+  
+  return tx.Commit()
+}
+
 func (s *service) GetUserUUid(name string) (string, error) {
   var user modals.User
 
@@ -67,4 +88,26 @@ func (s *service) NumberOfUsers() (int, error) {
   }
   
   return count, nil 
+}
+
+
+func (s *service) GetAllUsers() ([]modals.User, error) {
+  var users []modals.User
+
+  rows, err := s.db.Query("SELECT * FROM users;")
+  if err != nil {
+    return nil, err
+  }
+  defer rows.Close()
+
+  for rows.Next() {
+    var user modals.User
+    err := rows.Scan(&user.UUID, &user.Name, &user.Password) 
+    if err != nil {
+      return nil, err
+    }
+    users = append(users, user)
+  }
+
+  return users, nil
 }

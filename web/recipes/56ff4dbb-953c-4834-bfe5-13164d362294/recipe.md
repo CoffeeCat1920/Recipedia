@@ -1,4 +1,4 @@
-# Simple Omelette Recipe  
+# Omelette Recipe  
 
 ## Ingredients  
 - 2 eggs  

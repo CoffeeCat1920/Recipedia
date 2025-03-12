@@ -147,39 +147,6 @@ func AddRecipe(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, url, http.StatusFound)
 }
 
-func authSameUser(r *http.Request) (bool) {
-  // Getting the recipe
-  vars := mux.Vars(r)
-  recipeUUID := vars["uuid"] 
-  recipe, err := database.New().GetRecipe(recipeUUID)
-	if err != nil {                                                                                                                                                                                       
-		fmt.Println("Can't find Recipe To Edit")
-		return false
-	}
- 
-	// Get session token
-	c, err := r.Cookie("session-token")
-	if err != nil {
-		fmt.Println("Can't find Cookie")
-		return false
-	}
-
-	// Get user session
-	session, err := database.New().GetSession(c.Value)
-	if err != nil {
-		fmt.Printf("Can't find Session %s\n", c.Value)
-		return false
-	}
-  
-  // Verify the permission 
-  if !(recipe.OwnerId == session.OwnerId) {
-		fmt.Printf("You don't have ther permission to edit the recipe\n")
-		return false
-  }
-
-  return true
-}
-
 func EditRecipe(w http.ResponseWriter, r *http.Request) {
   // Getting the form Inputs
 	r.ParseForm()
@@ -267,4 +234,94 @@ func DeleteRecipe(w http.ResponseWriter, r *http.Request) {
   err = os.RemoveAll(directoryPath)
 
   http.Redirect(w, r, "/view/dashboard", http.StatusFound)
+}
+
+func EditRecipeAdmin(w http.ResponseWriter, r *http.Request) {
+  // Getting the form Inputs
+	r.ParseForm()
+	name := r.PostFormValue("name")
+	content := r.PostFormValue("content")
+   
+  // Getting the recipe
+  vars := mux.Vars(r)
+  recipeUUID := vars["uuid"] 
+  recipe, err := database.New().GetRecipe(recipeUUID)
+	if err != nil {
+		fmt.Println("Can't find Recipe To Edit")
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+  if !(IsAdmin(r)) {
+		fmt.Println("Doesn't have the permission to edit recipe")
+		http.Error(w, "Doesn't have the permission to edit recipe", http.StatusInternalServerError)
+		return
+  }
+
+  // Editing the old files
+	directoryPath := "web/recipes/" + recipe.UUID
+	if !fileExists(directoryPath) {
+		fmt.Println("Recipe Directory Doesn't Exists")
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+  
+  // Editing md file
+	mdPath := directoryPath + "/recipe.md"
+	if !fileExists(mdPath) {
+		fmt.Println("Recipe Markdown file already exists")
+		http.Error(w, "Recipe Markdown file already exists", http.StatusInternalServerError)
+		return
+	}
+  os.Remove(mdPath)
+
+  err = mdFileGenreator(content, recipe.UUID)
+  if err != nil {
+    http.Error(w, "Can't generate new md", http.StatusInternalServerError)
+  }
+
+
+  htmlFile := directoryPath + "/recipe.html"  
+  if !fileExists(htmlFile) {
+		fmt.Println("Recipe Directory Doesn't Exists")
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+  }
+  os.Remove(htmlFile)
+
+  err = htmlFileGenerator(name, content, recipe.UUID)
+  if err != nil {
+    http.Error(w, "Can't generate new md", http.StatusInternalServerError)
+  }
+  err = database.New().ChangeRecipeName(recipe.UUID, name)
+
+	// Redirect user
+  url := "/view/recipe/" + recipe.UUID
+
+	http.Redirect(w, r, url, http.StatusFound)
+}
+
+
+func AdminDeleteRecipe(w http.ResponseWriter, r *http.Request) {
+  vars := mux.Vars(r)
+  recipeUUID := vars["uuid"] 
+
+	directoryPath := "web/recipes/" + recipeUUID
+
+  if !(IsAdmin(r)) {
+		fmt.Println("Doesn't have the permission to edit recipe")
+		http.Error(w, "Doesn't have the permission to edit recipe", http.StatusInternalServerError)
+		return
+  }
+
+  err := database.New().DeleteRecipe(recipeUUID) 
+	if err != nil {
+		fmt.Printf("Can't find Recipe To Edit cause, %s", err.Error())
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+  err = os.RemoveAll(directoryPath)
+
+  http.Redirect(w, r, "/view/admin-manage-recipe", http.StatusFound)
 }
